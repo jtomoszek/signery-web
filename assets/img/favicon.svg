@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="signery">
+  <!--
+    DOČASNÁ FAVIKONA.
+    Manuál (str. 09) předepisuje monogram „s" na plné ploše. Monogram je kreslený
+    tvar, který se podle str. 15 nesmí překreslovat z PDF ani ze screenshotu —
+    proto je zde zatím oblouk, tj. schválený grafický prvek značky (str. 25).
+    Před spuštěním nahraďte originálním monogramem ze značkové knihovny.
+  -->
+  <rect width="64" height="64" rx="14" fill="#37371B"/>
+  <path d="M18 50 V30 a14 14 0 0 1 28 0 V50 H38 V30 a6 6 0 0 0 -12 0 V50 Z" fill="#F0EADE"/>
+</svg>

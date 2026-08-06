@@ -1,0 +1,12 @@
+# macOS
+.DS_Store
+
+# Interní podklady — nepatří do repozitáře webu, zůstávají v iCloudu
+Signery logo manuál.pdf
+Fotky/
+
+# Stránky první verze webu, které nahradila nová struktura
+_archiv/
+
+# Nástroje editoru
+.claude/
