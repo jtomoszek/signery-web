@@ -1,5 +1,10 @@
 # Signery — web
 
+**Živý náhled:** https://jtomoszek.github.io/signery-web/
+
+Nasazuje se automaticky z větve `main` přes GitHub Pages. Co pushnete, to je za pár
+minut online — vlastní build krok tu není.
+
 Statický web značky **Signery** postavený podle tří zadání:
 
 - **Strategie značky** — Signery jako partner stavebních projektů, ne dodavatel PENB.
