@@ -579,3 +579,114 @@ body[data-menu="true"] { overflow: hidden; }
   .pv { font-size: 0.6875rem; padding: 8px; gap: 8px; bottom: 12px; }
   .pv > span { display: none; }        /* na malém displeji zůstanou jen přepínače */
 }
+
+/* --------------------------------------------------------------------------
+   18 · Otvírací sekvence — rýsování značky
+   Oblouk je výřez z písmene „n" ve wordmarku (shodná souřadná soustava),
+   takže se dá vykreslit přesně na svém místě a nechat kolem něj dorůst
+   zbytek loga. Kóty a osy odkazují na jazyk technického výkresu.
+   -------------------------------------------------------------------------- */
+.intro {
+  position: fixed; inset: 0; z-index: 500;
+  display: grid; place-items: center;
+  background: var(--olive);
+  color: var(--sage);
+  transition: transform 0.9s var(--ease), opacity 0.6s var(--ease);
+}
+.intro[data-done="true"] { transform: translateY(-100%); opacity: 0; }
+.intro[hidden] { display: none; }
+
+/* Během sekvence se pod ní nescrolluje */
+body[data-intro="true"] { overflow: hidden; }
+
+.intro__inner { width: min(760px, 84vw); display: grid; justify-items: center; gap: 26px; }
+.intro__svg { width: 100%; height: auto; overflow: visible; }
+
+/* Sekvence začíná detailem na oblouku a odjede, až kolem něj doroste wordmark.
+   Střed oblouku je v souřadnicích výkresu na 346,25 × 88,68 z 689 × 198. */
+.intro__zoom {
+  transform-box: view-box;
+  transform-origin: 50.25% 44.8%;
+  transform: scale(2.15);
+}
+.is-drawing .intro__zoom { animation: introZoom .95s var(--ease) 1.7s forwards; }
+@keyframes introZoom { to { transform: scale(1); } }
+
+/* --- pomocné čáry ------------------------------------------------------- */
+.intro__guides line { stroke-width: 1; }
+.intro__guides line,
+.intro__guides circle { opacity: 0; }
+
+.intro__guides line {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.is-drawing .g-base  { animation: gLine .55s var(--ease) .10s forwards; opacity: .34; }
+.is-drawing .g-axis  { animation: gLine .55s var(--ease) .18s forwards; opacity: .26; }
+.is-drawing .g-dim   { animation: gLine .5s  var(--ease) .34s forwards; opacity: .8; }
+.is-drawing .g-tick  { animation: gLine .3s  var(--ease) .42s forwards; opacity: .8; }
+.is-drawing .g-rad   { animation: gLine .4s  var(--ease) 1.10s forwards; opacity: .8; }
+.is-drawing .g-dot   { animation: gFade .3s var(--ease) 1.10s forwards; }
+
+@keyframes gLine { to { stroke-dashoffset: 0; } }
+@keyframes gFade { to { opacity: .9; } }
+
+/* --- popisky kót -------------------------------------------------------- */
+.intro__labels text {
+  font-family: var(--font-text);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  opacity: 0;
+}
+.is-drawing .intro__labels text { animation: gFade .4s var(--ease) .58s forwards; }
+.is-drawing .intro__labels text:last-child { animation-delay: 1.25s; }
+
+/* --- oblouk: nejdřív obrys, pak výplň ----------------------------------- */
+.intro__arch path {
+  fill: var(--linen);
+  fill-opacity: 0;
+  stroke: var(--sage);
+  stroke-width: 1.4;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.is-drawing .intro__arch path {
+  animation: gLine 1s var(--ease) .40s forwards,
+             archFill .55s var(--ease) 1.5s forwards;
+}
+@keyframes archFill { to { fill-opacity: 1; stroke-opacity: 0; } }
+
+/* --- zbytek wordmarku dorůstá kolem ------------------------------------- */
+.intro__rest path { fill: var(--linen); opacity: 0; }
+.is-drawing .intro__rest path { animation: gFade1 .55s var(--ease) 1.95s forwards; }
+@keyframes gFade1 { to { opacity: 1; } }
+
+/* Kóty po dokreslení ustoupí */
+.is-drawing .intro__guides,
+.is-drawing .intro__labels { animation: guidesOut .5s var(--ease) 1.85s forwards; }
+@keyframes guidesOut { to { opacity: 0; } }
+
+.intro__caption {
+  font-size: 0.75rem; letter-spacing: 0.09em; text-transform: uppercase;
+  color: rgba(240, 234, 222, 0.45);
+  opacity: 0;
+}
+.intro__caption b { color: var(--sage); font-weight: 500; }
+.is-drawing .intro__caption { animation: gFade1 .5s var(--ease) 2.35s forwards; }
+
+.intro__skip {
+  position: absolute; right: clamp(16px, 4vw, 32px); bottom: clamp(16px, 4vw, 32px);
+  padding: 10px 18px;
+  background: transparent; border: 1px solid rgba(240, 234, 222, 0.25);
+  border-radius: var(--r-pill); color: rgba(240, 234, 222, 0.7);
+  font-family: var(--font-text); font-size: 0.6875rem; font-weight: 700;
+  letter-spacing: 0.09em; text-transform: uppercase; cursor: pointer;
+  transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+.intro__skip:hover { color: var(--linen); border-color: rgba(240, 234, 222, 0.6); }
+
+@media (prefers-reduced-motion: reduce) {
+  .intro { display: none; }
+}

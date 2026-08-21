@@ -18,6 +18,80 @@
   function lerp(a, b, t) { return a + (b - a) * t; }
 
   /* ------------------------------------------------------------------
+     Otvírací sekvence — rýsování značky
+     Poběží jen jednou; kdykoli se dá přeskočit klávesou, klikem i scrollem.
+     ------------------------------------------------------------------ */
+  var intro = document.querySelector("[data-intro]");
+
+  if (intro) {
+    var DURATION = 3600;          // musí sedět s posledním delayem v CSS
+    var SEEN_KEY = "signery-intro-seen";
+    var closed = true;
+    var timer = null;
+
+    var seen = function () {
+      try { return sessionStorage.getItem(SEEN_KEY) === "1"; } catch (e) { return false; }
+    };
+    var markSeen = function () {
+      try { sessionStorage.setItem(SEEN_KEY, "1"); } catch (e) {}
+    };
+
+    var closeIntro = function () {
+      if (closed) return;
+      closed = true;
+      window.clearTimeout(timer);
+      intro.setAttribute("data-done", "true");
+      document.body.removeAttribute("data-intro");
+      window.setTimeout(function () { intro.hidden = true; }, 950);
+      window.removeEventListener("keydown", onSkipKey);
+      window.removeEventListener("wheel", closeIntro);
+      window.removeEventListener("touchstart", closeIntro);
+    };
+
+    var onSkipKey = function (e) {
+      if (e.key === "Escape" || e.key === " " || e.key === "Enter") closeIntro();
+    };
+
+    var playIntro = function () {
+      closed = false;
+      markSeen();
+
+      intro.hidden = false;
+      intro.removeAttribute("data-done");
+      document.body.setAttribute("data-intro", "true");
+      /* Scroll na začátek, ať sekvence nezačne uprostřed stránky */
+      window.scrollTo(0, 0);
+
+      /* Restart animací */
+      intro.classList.remove("is-drawing");
+      void intro.offsetWidth;
+
+      window.addEventListener("keydown", onSkipKey);
+      window.addEventListener("wheel", closeIntro, { passive: true });
+      window.addEventListener("touchstart", closeIntro, { passive: true });
+
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () { intro.classList.add("is-drawing"); });
+      });
+
+      timer = window.setTimeout(closeIntro, DURATION);
+    };
+
+    var skipBtn = intro.querySelector("[data-intro-skip]");
+    if (skipBtn) skipBtn.addEventListener("click", closeIntro);
+
+    /* Přehraje se jednou za návštěvu; v náhledu jde spustit znovu tlačítkem. */
+    if (reduced || seen()) {
+      intro.hidden = true;
+    } else {
+      playIntro();
+    }
+
+    var replayBtn = document.querySelector("[data-intro-replay]");
+    if (replayBtn) replayBtn.addEventListener("click", playIntro);
+  }
+
+  /* ------------------------------------------------------------------
      Úvodní scrollovací sekvence
      ------------------------------------------------------------------ */
   var stage = document.querySelector("[data-stage]");
