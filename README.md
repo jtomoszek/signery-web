@@ -1,6 +1,10 @@
 # Signery — web
 
-**Živý náhled:** https://jtomoszek.github.io/signery-web/
+**Varianta A** (světlá, kartová): https://jtomoszek.github.io/signery-web/
+**Varianta B** (kinematografická): https://jtomoszek.github.io/signery-web/varianta-b/
+
+Dva návrhy k porovnání. Sdílejí značku — paletu, písma, logo i oblouk z manuálu —
+liší se rytmem, vahou typografie a prací s fotografií.
 
 Nasazuje se automaticky z větve `main` přes GitHub Pages. Co pushnete, to je za pár
 minut online — vlastní build krok tu není.

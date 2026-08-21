@@ -1,0 +1,581 @@
+/* ==========================================================================
+   Signery — VARIANTA B
+   Kinematografický směr. Web otevírá tmou a rozpouští se do světla —
+   stejná cesta, jakou projde projekt: od nejistoty na začátku k jistotě na konci.
+
+   Paleta, písma i oblouk jsou z manuálu značky. Liší se rytmus a váha:
+   varianta A staví na kartách a Poppins Medium, varianta B na celoplošné
+   fotografii, Poppins Light a velkém prostoru.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   01 · Tokeny
+   -------------------------------------------------------------------------- */
+:root {
+  --moss: #70704e;
+  --olive: #37371b;
+  --linen: #f0eade;
+  --sage: #afae90;
+  --white: #ffffff;
+
+  /* Odvozené odstíny z manuálu */
+  --ink-soft: #55543e;
+  --ink-muted: #5f5d4b;
+  --ink-on-dark: #c8c6ae;
+  --line: #e2dbcd;
+  --line-strong: #dcd5c7;
+  --line-dark: rgba(240, 234, 222, 0.16);
+
+  --font-display: "Poppins", "Arial", sans-serif;
+  --font-text: "DM Sans", "Arial", sans-serif;
+
+  --wrap: 1280px;
+  --wrap-narrow: 780px;
+  --gutter: 24px;
+
+  --sp-section: clamp(88px, 12vw, 190px);
+  --r-pill: 100px;
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  /* Barevná korekce fotografií do palety Signery.
+     Ilustrační snímky jsou švestkovo-růžové; tohle je posune do olivové. */
+  --photo-filter: sepia(0.42) hue-rotate(28deg) saturate(0.72) brightness(0.94) contrast(1.06);
+}
+
+/* Přepínač v horním pruhu umí korekci vypnout, aby šly porovnat originály */
+[data-photos="original"] { --photo-filter: none; }
+
+/* --------------------------------------------------------------------------
+   02 · Reset
+   -------------------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--olive);
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-size: 17px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img, svg { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+h1, h2, h3, h4, p, figure, blockquote, dl, dd { margin: 0; }
+button { font: inherit; color: inherit; }
+
+:focus-visible { outline: 2px solid var(--moss); outline-offset: 4px; border-radius: 3px; }
+::selection { background: var(--sage); color: var(--olive); }
+
+.skip-link {
+  position: absolute; left: 16px; top: -80px; z-index: 300;
+  padding: 12px 20px; background: var(--linen); color: var(--olive);
+  border-radius: var(--r-pill); transition: top 0.2s var(--ease);
+}
+.skip-link:focus { top: 16px; }
+
+.vh {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* --------------------------------------------------------------------------
+   03 · Typografie
+   Rozdíl proti variantě A: displejové titulky v Poppins Light 300.
+   -------------------------------------------------------------------------- */
+.display {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(2.05rem, 7.4vw, 6.5rem);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+
+.h2 {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(2rem, 4.6vw, 3.6rem);
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.25rem, 1.9vw, 1.55rem);
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+.lead {
+  font-size: clamp(1.0625rem, 1.45vw, 1.3rem);
+  line-height: 1.6;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+.body { color: var(--ink-soft); text-wrap: pretty; }
+.body-sm { font-size: 0.9375rem; line-height: 1.55; color: var(--ink-muted); }
+
+.label {
+  display: inline-block;
+  font-family: var(--font-text);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--moss);
+}
+
+.measure { max-width: 22ch; }
+.measure-lead { max-width: 54ch; }
+.prose p + p { margin-top: 1.1em; }
+
+/* --------------------------------------------------------------------------
+   04 · Layout
+   -------------------------------------------------------------------------- */
+.wrap { width: 100%; max-width: var(--wrap); margin-inline: auto; padding-inline: clamp(20px, 5vw, 48px); }
+.wrap-narrow { max-width: var(--wrap-narrow); }
+
+.light { background: var(--linen); color: var(--olive); }
+.dark  { background: var(--olive); color: var(--linen); }
+.dark .lead, .dark .body { color: var(--ink-on-dark); }
+.dark .body-sm { color: rgba(240, 234, 222, 0.6); }
+.dark .label { color: var(--sage); }
+
+.section { padding-block: var(--sp-section); }
+.section--tight { padding-block: clamp(56px, 7vw, 104px); }
+
+.rule { height: 1px; background: var(--line); border: 0; margin: 0; }
+.dark .rule { background: var(--line-dark); }
+
+/* --------------------------------------------------------------------------
+   05 · Tlačítka
+   -------------------------------------------------------------------------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 16px 30px;
+  border: 1px solid transparent;
+  border-radius: var(--r-pill);
+  font-family: var(--font-text);
+  font-size: 0.8125rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  cursor: pointer; white-space: nowrap;
+  transition: background-color 0.25s var(--ease), color 0.25s var(--ease),
+              border-color 0.25s var(--ease), transform 0.25s var(--ease);
+}
+.btn:hover { transform: translateY(-1px); }
+
+.btn--primary { background: var(--moss); color: var(--white); }
+.btn--primary:hover { background: var(--olive); }
+.btn--ghost { color: var(--olive); border-color: var(--line-strong); }
+.btn--ghost:hover { border-color: var(--olive); }
+
+.dark .btn--primary { background: var(--linen); color: var(--olive); }
+.dark .btn--primary:hover { background: var(--sage); }
+.dark .btn--ghost { color: var(--linen); border-color: rgba(240, 234, 222, 0.35); }
+.dark .btn--ghost:hover { border-color: var(--linen); background: rgba(240, 234, 222, 0.08); }
+
+.btn--sm { padding: 12px 22px; font-size: 0.75rem; }
+
+.link-arrow {
+  display: inline-flex; align-items: center; gap: 9px;
+  font-size: 0.875rem; font-weight: 500; color: var(--moss);
+  transition: gap 0.25s var(--ease);
+}
+.link-arrow svg { width: 16px; height: 16px; }
+.link-arrow:hover { gap: 15px; }
+.dark .link-arrow { color: var(--sage); }
+
+/* --------------------------------------------------------------------------
+   06 · Logo a oblouk — oficiální soubory ze značkové knihovny
+   -------------------------------------------------------------------------- */
+.logo { display: inline-block; line-height: 0; }
+.logo img { height: 30px; width: auto; }   /* = 104 px šířky, minimum dle manuálu */
+.logo--lg img { height: 46px; }
+
+/* Oblouk. Tvar je oficiální vektor, obarvuje se přes mask — nerotujeme,
+   nezrcadlíme, vždy otevřený dolů a ukotvený k základní linii. */
+.arch {
+  display: block;
+  width: clamp(52px, 7vw, 104px);
+  aspect-ratio: 98.7 / 99.6;
+  background: currentColor;
+  -webkit-mask: url("../assets/img/logo/arch.svg") no-repeat center / contain;
+  mask: url("../assets/img/logo/arch.svg") no-repeat center / contain;
+}
+.arch-row { display: flex; align-items: flex-end; gap: clamp(10px, 1.6vw, 22px); }
+
+/* --------------------------------------------------------------------------
+   07 · Navigace
+   -------------------------------------------------------------------------- */
+.nav {
+  position: fixed; inset: 0 0 auto 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  padding: 20px clamp(20px, 5vw, 48px);
+  transition: background-color 0.4s var(--ease), border-color 0.4s var(--ease);
+  border-bottom: 1px solid transparent;
+}
+.nav[data-solid="true"] {
+  background: rgba(240, 234, 222, 0.88);
+  backdrop-filter: saturate(1.4) blur(14px);
+  -webkit-backdrop-filter: saturate(1.4) blur(14px);
+  border-bottom-color: var(--line);
+}
+.nav__links { display: none; gap: clamp(6px, 1.6vw, 18px); }
+.nav__link {
+  padding: 9px 12px; border-radius: var(--r-pill);
+  font-size: 0.875rem; font-weight: 500;
+  color: var(--linen); opacity: 0.75;
+  transition: opacity 0.2s var(--ease), color 0.2s var(--ease);
+}
+.nav__link:hover, .nav__link[aria-current="page"] { opacity: 1; }
+.nav__actions { display: flex; align-items: center; gap: 10px; }
+.nav__cta { display: none; }
+
+/* Nad tmavým hero je logo bílé, po přechodu na světlo se prohodí */
+.nav .logo img { content: url("../assets/img/logo/wordmark-white.svg"); }
+.nav[data-solid="true"] .logo img { content: url("../assets/img/logo/wordmark-olive.svg"); }
+.nav[data-solid="true"] .nav__link { color: var(--ink-soft); }
+.nav[data-solid="true"] .nav__link[aria-current="page"] { color: var(--olive); }
+.nav[data-solid="true"] .nav__toggle span { background: var(--olive); }
+
+.nav__toggle {
+  display: inline-flex; flex-direction: column; justify-content: center; gap: 5px;
+  width: 44px; height: 44px; padding: 0 11px;
+  background: transparent; border: 1px solid currentColor; border-radius: 50%;
+  color: inherit; cursor: pointer;
+}
+.nav__toggle span {
+  display: block; height: 1.5px; background: var(--linen); border-radius: 2px;
+  transition: transform 0.28s var(--ease), opacity 0.2s var(--ease);
+}
+.nav__toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.nav__toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav__toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+.menu {
+  position: fixed; inset: 0; z-index: 99;
+  background: var(--olive); color: var(--linen);
+  padding: 108px clamp(20px, 6vw, 48px) 40px;
+  display: grid; grid-template-columns: minmax(0, 1fr); align-content: start; gap: 2px;
+  transform: translateY(-101%); transition: transform 0.45s var(--ease);
+  overflow-y: auto; overflow-x: hidden;
+}
+.menu[data-open="true"] { transform: translateY(0); }
+.menu a {
+  font-family: var(--font-display); font-weight: 300;
+  font-size: clamp(1.6rem, 7vw, 2.4rem); letter-spacing: -0.03em;
+  padding: 16px 0; border-bottom: 1px solid var(--line-dark);
+}
+.menu__foot { margin-top: 32px; display: grid; gap: 14px; justify-items: start; }
+body[data-menu="true"] { overflow: hidden; }
+
+@media (min-width: 1000px) {
+  .nav__links { display: flex; }
+  .nav__cta { display: inline-flex; }
+  .nav__toggle { display: none; }
+  .menu { display: none; }
+}
+
+/* --------------------------------------------------------------------------
+   08 · SCÉNA — úvodní scrollovací sekvence
+   Snímek se zvětší, rozostří, objeví se druhý titulek a plocha přejde do Linen.
+   Průběh 0—1 počítá JS a zapisuje ho do --p; níže jsou jen odvozené hodnoty.
+   -------------------------------------------------------------------------- */
+.stage { position: relative; height: 340vh; background: var(--olive); }
+.stage__sticky {
+  position: sticky; top: 0; height: 100vh; overflow: hidden;
+  display: grid; place-items: center;
+}
+
+.stage__media {
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  will-change: transform;
+}
+.stage__frame {
+  position: relative;
+  width: var(--frame-w, 34vw);
+  aspect-ratio: 4 / 3;
+  border-radius: var(--frame-r, 18px);
+  overflow: hidden;
+  will-change: transform, filter;
+  filter: blur(var(--blur, 0px));
+  box-shadow: 0 40px 120px rgba(0, 0, 0, 0.45);
+}
+.stage__frame img {
+  width: 100%; height: 100%; object-fit: cover;
+  transform: scale(var(--img-s, 1));
+  filter: var(--photo-filter);
+}
+/* Závoj ztmavuje snímek, aby druhý titulek zůstal čitelný */
+.stage__veil {
+  position: absolute; inset: 0; background: var(--olive);
+  opacity: var(--veil, 0.3); pointer-events: none;
+}
+
+.stage__copy {
+  position: relative; z-index: 2;
+  width: 100%; max-width: var(--wrap);
+  padding-inline: clamp(20px, 5vw, 48px);
+  text-align: center; color: var(--linen);
+  pointer-events: none;
+}
+.stage__layer { grid-area: 1 / 1; }
+
+.stage__one {
+  opacity: var(--o1, 1);
+  transform: translateY(var(--y1, 0px));
+}
+.stage__two {
+  position: absolute; inset: 0;
+  display: grid; place-content: center; justify-items: center;
+  padding-inline: clamp(20px, 5vw, 48px);
+  opacity: var(--o2, 0);
+  transform: translateY(var(--y2, 40px));
+}
+.stage__eyebrow { display: block; margin-bottom: 26px; color: var(--sage); }
+.stage__sub { margin-top: 26px; max-width: 46ch; margin-inline: auto; color: rgba(240, 234, 222, 0.8); }
+
+.stage__scroll {
+  position: absolute; left: 50%; bottom: 104px; transform: translateX(-50%);
+  z-index: 3; display: grid; justify-items: center; gap: 10px;
+  font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.14em;
+  text-transform: uppercase; color: rgba(240, 234, 222, 0.65);
+  opacity: var(--o1, 1); pointer-events: none;
+}
+.stage__scroll i {
+  display: block; width: 1px; height: 34px;
+  background: linear-gradient(rgba(240,234,222,.7), transparent);
+  animation: drop 2.2s var(--ease) infinite;
+}
+@keyframes drop { 0% { transform: scaleY(0); transform-origin: top; } 55% { transform: scaleY(1); transform-origin: top; } 56% { transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
+
+/* Plocha Linen, která na konci sekvence vyjede zdola */
+.stage__sheet {
+  position: absolute; inset: 0; z-index: 4;
+  background: var(--linen);
+  transform: translateY(var(--sheet, 100%));
+  will-change: transform;
+}
+
+@media (max-width: 780px) {
+  .stage { height: 300vh; }
+  .stage__frame { --frame-w: 86vw; }
+  /* Nad pruhem náhledu musí zůstat místo */
+  .stage__scroll { bottom: 128px; }
+  .stage__scroll span { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage { height: auto; }
+  .stage__sticky { position: static; height: auto; min-height: 82vh; padding-block: 120px 80px; }
+  .stage__frame { --frame-w: 100%; --frame-r: 14px; filter: none; }
+  .stage__sheet, .stage__scroll { display: none; }
+  .stage__one { display: none; }
+  .stage__two { position: static; opacity: 1; transform: none; padding: 0; }
+  .stage__media { position: static; margin-top: 48px; }
+  .stage__veil { display: none; }
+}
+
+/* --------------------------------------------------------------------------
+   09 · Fotografie
+   -------------------------------------------------------------------------- */
+.shot { position: relative; overflow: hidden; background: var(--sage); }
+.shot img { width: 100%; height: 100%; object-fit: cover; filter: var(--photo-filter); }
+
+.band { position: relative; min-height: min(78vh, 680px); display: grid; }
+.band > img { grid-area: 1 / 1; width: 100%; height: 100%; object-fit: cover; filter: var(--photo-filter); }
+/* filter na <img> vytváří stacking context, takže by se obrázek kreslil nad
+   sourozenci. Závoj i text proto musí být pozicované a se z-indexem. */
+.band__veil { grid-area: 1 / 1; position: relative; z-index: 1;
+  background: linear-gradient(180deg, rgba(55,55,27,.15), rgba(55,55,27,.72)); }
+/* Pozor na jednotku ch: na kontejneru se počítá z písma rodiče, ne z titulku.
+   Šířku proto omezujeme až na samotném nadpisu. */
+.band__copy {
+  grid-area: 1 / 1; align-self: end; position: relative; z-index: 2;
+  padding: clamp(28px, 5vw, 72px);
+  color: var(--linen);
+  max-width: min(680px, 90%);
+}
+.band__copy .h2 { max-width: 13ch; }
+
+.shot--tall { aspect-ratio: 3 / 4; }
+.shot--wide { aspect-ratio: 16 / 10; }
+/* Oblouk jako rám pro obsah (manuál, str. 25) */
+.shot--arch { border-radius: 999px 999px 0 0; }
+
+.figure { display: grid; gap: 14px; }
+.figure figcaption { font-size: 0.8125rem; color: var(--ink-muted); }
+
+/* --------------------------------------------------------------------------
+   10 · Split — text vedle fotografie
+   -------------------------------------------------------------------------- */
+.split { display: grid; gap: clamp(32px, 5vw, 72px); align-items: center; }
+@media (min-width: 900px) {
+  .split { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .split--text-first > :first-child { order: -1; }
+  .split--media-wide { grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); }
+}
+
+/* --------------------------------------------------------------------------
+   11 · Škála energetických tříd
+   -------------------------------------------------------------------------- */
+.scale { display: grid; gap: 7px; }
+.scale__row { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 14px; align-items: center; }
+.scale__letter {
+  font-family: var(--font-display); font-weight: 500; font-size: 0.9375rem;
+  color: rgba(240, 234, 222, 0.55); text-align: center;
+}
+.scale__bar {
+  height: 30px; width: var(--w);
+  max-width: 100%;
+  background: var(--c);
+  border-radius: 3px 0 0 3px;
+  clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 50%, calc(100% - 15px) 100%, 0 100%);
+  transform-origin: left center;
+  transform: scaleX(0);
+  transition: transform 0.85s var(--ease);
+  display: flex; align-items: center; justify-content: flex-end;
+  padding-right: 26px;
+}
+.is-in .scale__bar { transform: scaleX(1); }
+.scale__row--on .scale__letter { color: var(--linen); }
+.scale__tag {
+  margin-left: 14px;
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase;
+  color: var(--sage); opacity: 0;
+  transition: opacity 0.5s var(--ease) 0.9s;
+  white-space: nowrap;
+}
+.is-in .scale__tag { opacity: 1; }
+.scale__foot { display: flex; justify-content: space-between; gap: 16px; margin-top: 18px; }
+
+/* --------------------------------------------------------------------------
+   12 · Rozcestí B2B / B2C
+   -------------------------------------------------------------------------- */
+.paths { display: grid; gap: 2px; }
+@media (min-width: 860px) { .paths { grid-template-columns: 1fr 1fr; } }
+
+.path {
+  position: relative; display: grid; min-height: min(76vh, 660px);
+  overflow: hidden; isolation: isolate;
+}
+.path > img {
+  grid-area: 1 / 1; width: 100%; height: 100%; object-fit: cover;
+  filter: var(--photo-filter);
+  transform: scale(1.02);
+  transition: transform 1.1s var(--ease);
+}
+.path:hover > img { transform: scale(1.07); }
+.path__veil { grid-area: 1 / 1; position: relative; z-index: 1;
+  background: linear-gradient(180deg, rgba(55,55,27,.25), rgba(55,55,27,.82)); }
+.path__copy {
+  grid-area: 1 / 1; align-self: end; position: relative; z-index: 2;
+  display: grid; gap: 16px; justify-items: start;
+  padding: clamp(28px, 4vw, 56px);
+  color: var(--linen);
+}
+.path__copy .body { color: rgba(240, 234, 222, 0.82); max-width: 34ch; }
+
+/* --------------------------------------------------------------------------
+   13 · Seznamy — služby, důvody
+   -------------------------------------------------------------------------- */
+.list { display: grid; }
+.list__item {
+  display: grid; gap: 8px 40px;
+  padding: clamp(22px, 3vw, 32px) 0;
+  border-top: 1px solid var(--line);
+  align-items: baseline;
+}
+.list__item:last-child { border-bottom: 1px solid var(--line); }
+.dark .list__item { border-color: var(--line-dark); }
+.list__no {
+  font-family: var(--font-display); font-weight: 300; font-size: 0.875rem;
+  letter-spacing: 0.08em; color: var(--sage);
+}
+@media (min-width: 820px) {
+  .list__item { grid-template-columns: 60px minmax(0, 0.8fr) minmax(0, 1.2fr); }
+}
+
+/* --------------------------------------------------------------------------
+   14 · Podpis značky — „Signery je podpisem odbornosti"
+   -------------------------------------------------------------------------- */
+.sig { width: min(300px, 62%); height: auto; overflow: visible; }
+.sig path {
+  fill: none; stroke: currentColor; stroke-width: 2.4;
+  stroke-linecap: round; stroke-linejoin: round;
+  stroke-dasharray: 620; stroke-dashoffset: 620;
+  opacity: 0.9;
+}
+.is-in .sig path { animation: sign 2.4s var(--ease) forwards; }
+@keyframes sign { to { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .sig path { stroke-dashoffset: 0; animation: none; }
+}
+
+/* --------------------------------------------------------------------------
+   15 · Patička
+   -------------------------------------------------------------------------- */
+.footer { padding-block: clamp(56px, 7vw, 96px) 40px; }
+.footer__top { display: grid; gap: 44px; padding-bottom: 44px; border-bottom: 1px solid var(--line-dark); }
+@media (min-width: 900px) { .footer__top { grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 72px; } }
+.footer__cols { display: grid; gap: 32px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr)); }
+.footer__title {
+  font-size: 0.75rem; font-weight: 500; letter-spacing: 0.09em;
+  text-transform: uppercase; color: var(--sage); margin-bottom: 14px;
+}
+.footer__cols li + li { margin-top: 10px; }
+.footer__cols a, .footer__cols span { font-size: 0.9375rem; color: var(--ink-on-dark); }
+.footer__cols a:hover { color: var(--linen); }
+.footer__bottom {
+  padding-top: 26px; display: flex; flex-wrap: wrap; gap: 12px 28px;
+  justify-content: space-between; font-size: 0.8125rem; color: rgba(240,234,222,.55);
+}
+
+/* --------------------------------------------------------------------------
+   16 · Odhalení při scrollu
+   -------------------------------------------------------------------------- */
+.js [data-reveal] { opacity: 0; transform: translateY(22px); transition: opacity .8s var(--ease), transform .8s var(--ease); }
+.js [data-reveal].is-in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal] { opacity: 1; transform: none; transition: none; }
+}
+
+/* --------------------------------------------------------------------------
+   17 · Pruh náhledu (jen pro schvalování, na ostrém webu nebude)
+   -------------------------------------------------------------------------- */
+.pv {
+  position: fixed; left: 50%; transform: translateX(-50%); bottom: 16px; z-index: 200;
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap; justify-content: center;
+  padding: 10px 10px 10px 18px;
+  background: rgba(55, 55, 27, 0.92);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(240, 234, 222, 0.18);
+  border-radius: var(--r-pill);
+  color: rgba(240, 234, 222, 0.8);
+  font-size: 0.75rem; line-height: 1.3;
+  max-width: calc(100vw - 24px);
+}
+.pv strong { color: var(--linen); font-weight: 500; }
+.pv__btn {
+  padding: 8px 15px; border: 1px solid rgba(240, 234, 222, 0.3);
+  border-radius: var(--r-pill); background: transparent; color: var(--linen);
+  font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  cursor: pointer; white-space: nowrap;
+  transition: background-color 0.2s var(--ease);
+}
+.pv__btn:hover { background: rgba(240, 234, 222, 0.14); }
+@media (max-width: 560px) {
+  .pv { font-size: 0.6875rem; padding: 8px; gap: 8px; bottom: 12px; }
+  .pv > span { display: none; }        /* na malém displeji zůstanou jen přepínače */
+}

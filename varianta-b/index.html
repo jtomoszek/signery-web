@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="cs" class="no-js" data-photos="brand">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Signery — Partner stavebních projektů · varianta B</title>
+<meta name="description" content="Druhý návrh webu Signery. Kinematografický směr: web otevírá tmou a rozpouští se do světla.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Poppins:wght@300;400;500;600&display=swap">
+<link rel="stylesheet" href="style.css">
+<script>document.documentElement.className = document.documentElement.className.replace('no-js', 'js');</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Přeskočit na obsah</a>
+
+<!-- ================= NAVIGACE ================= -->
+<nav class="nav" data-nav aria-label="Hlavní navigace">
+  <a class="logo" href="index.html" aria-label="Signery — domů">
+    <img src="../assets/img/logo/wordmark-white.svg" alt="signery" width="689" height="198">
+  </a>
+  <div class="nav__links">
+    <a class="nav__link" href="index.html" aria-current="page">Domů</a>
+    <a class="nav__link" href="../pro-profesionaly.html">Pro profesionály</a>
+    <a class="nav__link" href="../pro-majitele.html">Pro majitele nemovitostí</a>
+    <a class="nav__link" href="../kontakt.html">Kontakt</a>
+  </div>
+  <div class="nav__actions">
+    <a class="btn btn--primary btn--sm nav__cta" href="../kontakt.html">Pojďme si promluvit</a>
+    <button class="nav__toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="menu" aria-label="Otevřít menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="menu" id="menu" data-menu data-open="false">
+  <a href="index.html">Domů</a>
+  <a href="../pro-profesionaly.html">Pro profesionály</a>
+  <a href="../pro-majitele.html">Pro majitele nemovitostí</a>
+  <a href="../kontakt.html">Kontakt</a>
+  <div class="menu__foot">
+    <a class="btn btn--primary" href="../kontakt.html">Pojďme si promluvit</a>
+    <a class="body-sm" href="mailto:sandra@signery.cz" style="color:var(--ink-on-dark)">sandra@signery.cz</a>
+  </div>
+</div>
+
+<main id="main">
+
+  <!-- ================= ÚVODNÍ SEKVENCE =================
+       Snímek se zvětší přes celou plochu, rozostří se, objeví se druhý
+       titulek a nakonec plocha přejde do Linen. -->
+  <section class="stage" data-stage>
+    <div class="stage__sticky">
+
+      <div class="stage__media" aria-hidden="true">
+        <div class="stage__frame">
+          <img src="img/strom.jpg"
+               srcset="img/strom@1000.jpg 1000w, img/strom.jpg 1920w"
+               sizes="120vw"
+               alt="" fetchpriority="high" decoding="async">
+          <div class="stage__veil"></div>
+        </div>
+      </div>
+
+      <div class="stage__copy">
+        <div class="stage__layer stage__one">
+          <span class="label stage__eyebrow">Signery</span>
+          <p class="display">Každý projekt<br>nese svůj podpis.</p>
+        </div>
+
+        <div class="stage__layer stage__two">
+          <h1 class="display">Partner stavebních projektů.</h1>
+          <p class="lead stage__sub">
+            Pomáháme projektantům, architektům, developerům i majitelům nemovitostí
+            řešit energetickou stránku staveb.
+          </p>
+        </div>
+      </div>
+
+      <div class="stage__scroll" aria-hidden="true">
+        <span>Scrollujte</span>
+        <i></i>
+      </div>
+
+      <div class="stage__sheet" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <!-- ================= MANIFEST ================= -->
+  <section class="light section" id="pristup">
+    <div class="wrap">
+      <div class="split split--media-wide">
+        <div data-reveal>
+          <span class="label">Náš pohled</span>
+          <h2 class="h2 measure" style="margin-top:18px">Nejde jen o energetiku. Jde o celý projekt.</h2>
+        </div>
+        <div class="prose body" data-reveal data-reveal-delay="120">
+          <p>
+            Každý stavební projekt je výsledkem spolupráce desítek profesí.
+            Energetická část je jednou z nich — ale často rozhoduje o tom,
+            jestli projekt projde bez komplikací.
+          </p>
+          <p>
+            Nevnímáme ji jako povinný dokument na konci. Jsme partnerem,
+            který nad projektem přemýšlí od začátku a hledá řešení,
+            jež dávají technický, legislativní i ekonomický smysl.
+          </p>
+          <p>
+            Proto s námi dlouhodobě spolupracují projektanti, architekti
+            i developerské společnosti po celé republice.
+          </p>
+        </div>
+      </div>
+
+      <div class="arch-row" aria-hidden="true" style="margin-top:clamp(56px,7vw,96px);color:var(--sage)" data-reveal>
+        <span class="arch"></span>
+        <span class="arch" style="color:var(--moss)"></span>
+        <span class="arch"></span>
+        <span class="arch" style="color:var(--olive)"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FOTOGRAFICKÝ PÁS ================= -->
+  <section class="band" data-reveal>
+    <img src="img/pas-kopce.jpg" alt="Krajina zvlněných kopců v podvečerním světle" loading="lazy" decoding="async">
+    <div class="band__veil"></div>
+    <div class="band__copy">
+      <span class="label" style="color:var(--sage)">Energetika staveb</span>
+      <p class="h2" style="margin-top:16px">Dobré budovy nevznikají náhodou.</p>
+    </div>
+  </section>
+
+  <!-- ================= ŠKÁLA TŘÍD ================= -->
+  <section class="dark section">
+    <div class="wrap">
+      <div class="split">
+        <div data-reveal>
+          <span class="label">Průkaz energetické náročnosti</span>
+          <h2 class="h2 measure" style="margin-top:18px">Jedno písmeno. A všechna rozhodnutí, která k němu vedla.</h2>
+          <p class="body measure-lead" style="margin-top:26px">
+            Třída budovy je výsledek, ne cíl. Vzniká z tvaru, orientace, obálky
+            a zdroje tepla — tedy z rozhodnutí, která padnou dávno před tím,
+            než někdo vystaví průkaz.
+          </p>
+          <p class="body measure-lead" style="margin-top:18px">
+            Čím dřív jsme u toho, tím víc se s výsledkem dá dělat.
+          </p>
+        </div>
+
+        <div class="scale" data-reveal data-reveal-delay="120">
+          <div class="scale__row">
+            <span class="scale__letter">A</span>
+            <span class="scale__bar" style="--w:34%;--c:#afae90"></span>
+          </div>
+          <div class="scale__row scale__row--on">
+            <span class="scale__letter">B</span>
+            <span class="scale__bar" style="--w:44%;--c:#9c9b7f;transition-delay:.08s"></span>
+            <span class="scale__tag" style="grid-column:2">Velmi úsporná</span>
+          </div>
+          <div class="scale__row">
+            <span class="scale__letter">C</span>
+            <span class="scale__bar" style="--w:55%;--c:#8a8970;transition-delay:.16s"></span>
+          </div>
+          <div class="scale__row">
+            <span class="scale__letter">D</span>
+            <span class="scale__bar" style="--w:65%;--c:#797961;transition-delay:.24s"></span>
+          </div>
+          <div class="scale__row">
+            <span class="scale__letter">E</span>
+            <span class="scale__bar" style="--w:76%;--c:#686852;transition-delay:.32s"></span>
+          </div>
+          <div class="scale__row">
+            <span class="scale__letter">F</span>
+            <span class="scale__bar" style="--w:87%;--c:#575744;transition-delay:.4s"></span>
+          </div>
+          <div class="scale__row">
+            <span class="scale__letter">G</span>
+            <span class="scale__bar" style="--w:98%;--c:#43432a;transition-delay:.48s"></span>
+          </div>
+
+          <div class="scale__foot">
+            <span class="body-sm">Mimořádně úsporná</span>
+            <span class="body-sm">Mimořádně nehospodárná</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SANDRA ================= -->
+  <section class="light section" id="sandra">
+    <div class="wrap">
+      <div class="split split--media-wide">
+        <div class="shot shot--tall shot--arch" data-reveal>
+          <img src="../assets/img/photo/sandra-schwarzova.jpg"
+               srcset="../assets/img/photo/sandra-schwarzova@900.jpg 533w, ../assets/img/photo/sandra-schwarzova.jpg 1067w"
+               sizes="(min-width: 900px) 46vw, 92vw"
+               alt="Sandra Schwarzová, zakladatelka Signery" loading="lazy" decoding="async">
+        </div>
+
+        <div data-reveal data-reveal-delay="120">
+          <span class="label">Za značkou stojí člověk</span>
+          <h2 class="h2" style="margin-top:18px">Nevěřím v anonymní zpracování dokumentů.</h2>
+
+          <div class="prose body measure-lead" style="margin-top:28px">
+            <p>
+              Jmenuji se <strong style="color:var(--olive);font-weight:500">Sandra Schwarzová</strong>
+              a energetice staveb se věnuji s jediným cílem — být partnerem,
+              na kterého se projektanti i investoři mohou spolehnout v každé fázi projektu.
+            </p>
+            <p>
+              Věřím v odbornou spolupráci, otevřenou komunikaci a hledání řešení,
+              která budou fungovat nejen dnes, ale i za mnoho let.
+            </p>
+            <p>Právě na těchto hodnotách vznikla značka Signery.</p>
+          </div>
+
+          <svg class="sig" viewBox="0 0 300 62" aria-hidden="true" style="margin-top:32px;color:var(--moss)">
+            <path d="M6 46C24 10 42 8 48 24c6 16-12 30-16 16C28 26 48 16 76 32c22 12 44 10 66-4 18-11 36-14 56-4 20 10 40 12 96-6"/>
+          </svg>
+          <p class="body-sm" style="margin-top:14px">Signery je podpisem odbornosti.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ROZCESTÍ ================= -->
+  <section class="paths" aria-label="Vyberte cestu podle svého projektu">
+    <a class="path" href="../pro-profesionaly.html">
+      <img src="img/vetev.jpg" srcset="img/vetev@1000.jpg 1000w, img/vetev.jpg 1920w"
+           sizes="(min-width: 860px) 50vw, 100vw"
+           alt="Větev s listy v tlumené krajině" loading="lazy" decoding="async">
+      <div class="path__veil"></div>
+      <div class="path__copy">
+        <span class="label" style="color:var(--sage)">Pro profesionály</span>
+        <p class="h2">Projektanti, architekti a developeři</p>
+        <p class="body">
+          Partner, který rozumí projektům, dodržuje termíny
+          a dokáže být součástí vašeho týmu.
+        </p>
+        <span class="link-arrow" style="color:var(--linen)">
+          Vstoupit do sekce
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <a class="path" href="../pro-majitele.html">
+      <img src="img/ruze.jpg" srcset="img/ruze@1000.jpg 1000w, img/ruze.jpg 1920w"
+           sizes="(min-width: 860px) 50vw, 100vw"
+           alt="Světlý květ v tlumené krajině" loading="lazy" decoding="async">
+      <div class="path__veil"></div>
+      <div class="path__copy">
+        <span class="label" style="color:var(--sage)">Pro majitele nemovitostí</span>
+        <p class="h2">Potřebuji PENB</p>
+        <p class="body">
+          Prodáváte, pronajímáte nebo stavíte? Provedeme vás celým procesem
+          jednoduše a bez zbytečné administrativy.
+        </p>
+        <span class="link-arrow" style="color:var(--linen)">
+          Vstoupit do sekce
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </span>
+      </div>
+    </a>
+  </section>
+
+  <!-- ================= SLUŽBY ================= -->
+  <section class="light section" id="sluzby">
+    <div class="wrap">
+      <div style="max-width:34rem" data-reveal>
+        <span class="label">S čím vám pomůžeme</span>
+        <h2 class="h2" style="margin-top:18px">Energetická řešení nejsou o jednom dokumentu.</h2>
+        <p class="body" style="margin-top:24px">
+          Jsou o správných rozhodnutích během celého projektu.
+        </p>
+      </div>
+
+      <div class="list" style="margin-top:clamp(48px,6vw,80px)">
+        <div class="list__item" data-reveal>
+          <span class="list__no">01</span>
+          <h3 class="h3">Průkazy energetické náročnosti</h3>
+          <p class="body-sm">Včetně souboru XML pro Ministerstvo průmyslu a obchodu a vysvětlení, co výsledek znamená.</p>
+        </div>
+        <div class="list__item" data-reveal data-reveal-delay="60">
+          <span class="list__no">02</span>
+          <h3 class="h3">Energetické posudky</h3>
+          <p class="body-sm">Posouzení variant zdrojů a opatření včetně ekonomického vyhodnocení.</p>
+        </div>
+        <div class="list__item" data-reveal data-reveal-delay="120">
+          <span class="list__no">03</span>
+          <h3 class="h3">Energetické výpočty</h3>
+          <p class="body-sm">Podklady pro rozhodování v projektu, ne jen čísla do spisu.</p>
+        </div>
+        <div class="list__item" data-reveal data-reveal-delay="180">
+          <span class="list__no">04</span>
+          <h3 class="h3">Konzultace projektů</h3>
+          <p class="body-sm">Energetický pohled na návrh ve fázi, kdy se s ním ještě dá hýbat.</p>
+        </div>
+        <div class="list__item" data-reveal data-reveal-delay="240">
+          <span class="list__no">05</span>
+          <h3 class="h3">Optimalizace energetické náročnosti</h3>
+          <p class="body-sm">Nejlevnější cesta ke splnění požadavku — obálka, zdroj, systémy.</p>
+        </div>
+        <div class="list__item" data-reveal data-reveal-delay="300">
+          <span class="list__no">06</span>
+          <h3 class="h3">Odborná podpora projektantů</h3>
+          <p class="body-sm">Průběžná spolupráce po celou dobu projektu, ne jednorázová dodávka.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PROČ SIGNERY ================= -->
+  <section class="dark section">
+    <div class="wrap">
+      <div style="max-width:32rem" data-reveal>
+        <span class="label">Proč Signery</span>
+        <h2 class="h2" style="margin-top:18px">Čtyři důvody, proč s námi lidé zůstávají.</h2>
+      </div>
+
+      <div class="list" style="margin-top:clamp(48px,6vw,80px)">
+        <div class="list__item" data-reveal>
+          <span class="list__no">01</span>
+          <h3 class="h3">Myslíme v souvislostech</h3>
+          <p class="body-sm">Neřešíme jednotlivé výpočty. Přemýšlíme nad celým projektem.</p>
+        </div>
+        <div class="list__item" data-reveal data-reveal-delay="60">
+          <span class="list__no">02</span>
+          <h3 class="h3">Komunikujeme rychle</h3>
+          <p class="body-sm">Respektujeme termíny projektů. Dobrá komunikace je stejně důležitá jako odborné znalosti.</p>
+        </div>
+        <div class="list__item" data-reveal data-reveal-delay="120">
+          <span class="list__no">03</span>
+          <h3 class="h3">Hledáme řešení</h3>
+          <p class="body-sm">Naším cílem není říkat, proč něco nejde. Ale najít cestu, jak projekt dokončit.</p>
+        </div>
+        <div class="list__item" data-reveal data-reveal-delay="180">
+          <span class="list__no">04</span>
+          <h3 class="h3">Budujeme partnerství</h3>
+          <p class="body-sm">Nechceme být dodavatelem jedné zakázky. Chceme být partnerem, kterému svěříte projekty dlouhodobě.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ZÁVĚREČNÉ CTA ================= -->
+  <section class="light section" style="text-align:center">
+    <div class="wrap wrap-narrow">
+      <div data-reveal>
+        <span class="label">Další krok</span>
+        <p class="display" style="margin-top:22px">Každý projekt<br>si zaslouží partnera.</p>
+        <p class="lead" style="margin:28px auto 0;max-width:48ch">
+          Ať navrhujete bytový dům, rodinný dům, nebo právě řešíte prodej své nemovitosti —
+          rádi se staneme součástí vašeho projektu.
+        </p>
+        <div style="margin-top:38px">
+          <a class="btn btn--primary" href="../kontakt.html">Pojďme si promluvit o vašem projektu</a>
+        </div>
+      </div>
+
+      <div class="arch-row" aria-hidden="true" style="justify-content:center;margin-top:clamp(64px,8vw,120px);color:var(--sage)" data-reveal>
+        <span class="arch" style="color:var(--sage)"></span>
+        <span class="arch" style="color:var(--moss)"></span>
+        <span class="arch" style="color:var(--olive)"></span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ================= PATIČKA ================= -->
+<footer class="dark footer">
+  <div class="wrap">
+    <div class="footer__top">
+      <div>
+        <a class="logo logo--lg" href="index.html" aria-label="Signery — domů">
+          <img src="../assets/img/logo/wordmark-white.svg" alt="signery" width="689" height="198">
+        </a>
+        <p class="body" style="margin-top:22px;max-width:34ch">
+          Partner stavebních projektů. Pomáháme navrhovat budovy,
+          které obstojí technicky, legislativně i ekonomicky.
+        </p>
+      </div>
+
+      <div class="footer__cols">
+        <div>
+          <p class="footer__title">Web</p>
+          <ul>
+            <li><a href="index.html">Domů</a></li>
+            <li><a href="../pro-profesionaly.html">Pro profesionály</a></li>
+            <li><a href="../pro-majitele.html">Pro majitele nemovitostí</a></li>
+            <li><a href="../kontakt.html">Kontakt</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__title">Služby</p>
+          <ul>
+            <li><a href="#sluzby">PENB</a></li>
+            <li><a href="#sluzby">Energetické posudky</a></li>
+            <li><a href="#sluzby">Konzultace projektů</a></li>
+            <li><a href="#sluzby">Optimalizace</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__title">Kontakt</p>
+          <ul>
+            <li><a href="mailto:sandra@signery.cz">sandra@signery.cz</a></li>
+            <li><a href="tel:+420776072559">+420 776 072 559</a></li>
+            <li><span>Křížkovského 12<br>602 00 Brno</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <span>© <span data-year>2026</span> signery s.r.o. · IČO 09283741</span>
+      <span>Zpracování osobních údajů · Cookies</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Pruh náhledu — na ostrém webu nebude -->
+<div class="pv">
+  <span><strong>Varianta B</strong> — kinematografický směr. Fotografie jsou ilustrační.</span>
+  <button class="pv__btn" type="button" data-photos-toggle>Ukázat originály</button>
+  <a class="pv__btn" href="../index.html">Varianta A</a>
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>

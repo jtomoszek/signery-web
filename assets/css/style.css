@@ -33,10 +33,12 @@
   --surface: var(--white);
   --surface-soft: var(--linen-50);
   --ink: var(--olive);
-  --ink-soft: #5c5c46;
-  --ink-muted: #77776a;
-  --line: rgba(55, 55, 27, 0.12);
-  --line-strong: rgba(55, 55, 27, 0.22);
+  /* Odvozené odstíny převzaté přímo z manuálu značky, ne odhadnuté */
+  --ink-soft: #55543e;
+  --ink-muted: #5f5d4b;
+  --ink-on-dark: #c8c6ae;
+  --line: #e2dbcd;
+  --line-strong: #dcd5c7;
 
   /* Písmo (manuál, str. 21–23) */
   --font-display: "Poppins", "Arial", sans-serif;
@@ -409,29 +411,15 @@ h1, h2, h3, h4 {
    Před spuštěním nahraďte originálním SVG ze značkové knihovny (manuál, str. 15:
    „Nikdy nepřekreslujte z PDF ani ze screenshotu.").
    -------------------------------------------------------------------------- */
-.logo {
-  display: inline-block;
-  position: relative;
-  padding-bottom: 0.22em;
-  font-family: var(--font-display);
-  font-weight: 500;
-  font-size: 1.5rem;
-  letter-spacing: -0.045em;
-  line-height: 1;
-  color: var(--olive);
+.logo { display: inline-block; line-height: 0; }
+.logo__img {
+  display: block;
+  width: auto;
+  /* Poměr wordmarku je 689 : 198. Minimální šířka podle manuálu (str. 10)
+     je 104 px, což odpovídá výšce 30 px — pod ni nejdeme. */
+  height: 30px;
 }
-/* Odsazený bod pod písmenem „s" — charakteristický detail wordmarku (manuál, str. 06) */
-.logo__dot {
-  position: absolute;
-  left: 0.04em;
-  bottom: 0.02em;
-  width: 0.16em;
-  height: 0.16em;
-  border-radius: 50%;
-  background: currentColor;
-}
-.logo--invert { color: var(--linen); }
-.logo--lg { font-size: 2.25rem; }
+.logo--lg .logo__img { height: 44px; }
 
 /* --------------------------------------------------------------------------
    08 · Navigace — plovoucí pilulka
