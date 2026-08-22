@@ -243,7 +243,7 @@
 
       /* 1 · video povyroste — jen o ten kousek, ze středu.
          Roste zároveň na šířku i na výšku, aby na konci vyplnilo celou plochu. */
-      var grow = ease(phase(p, 0, 0.40));
+      var grow = ease(phase(p, 0, 0.30));
 
       var startW = narrow ? 92 : 80;                       // ve vw
       var ratio = narrow ? 4 / 3 : 9 / 16;                 // výška ku šířce
@@ -255,23 +255,33 @@
 
       var w = lerp(startW, 100, grow);
       var h = lerp(startH, 100, grow);
-      var r = lerp(20, 0, phase(p, 0.18, 0.40));
+      var r = lerp(20, 0, phase(p, 0.14, 0.30));
       var imgS = lerp(1.06, 1, grow);
 
       /* 2 · rozostření a ztmavení */
-      var blur = lerp(0, 20, phase(p, 0.38, 0.62));
-      var veil = lerp(0.32, 0.58, phase(p, 0.32, 0.66));
+      var blur = lerp(0, 20, phase(p, 0.28, 0.48));
+      var veil = lerp(0.32, 0.58, phase(p, 0.26, 0.52));
 
-      /* 3 · první titulek mizí, druhý přichází */
-      var o1 = 1 - phase(p, 0.10, 0.30);
-      var y1 = lerp(0, -40, phase(p, 0.10, 0.34));
-      var o2 = phase(p, 0.48, 0.68) * (1 - phase(p, 0.86, 0.95));
-      var y2 = lerp(44, 0, phase(p, 0.48, 0.72));
+      /* 3 · první titulek mizí, druhý přichází a včas zase odchází,
+         aby ho plocha Linen nepřekryla uprostřed přechodu */
+      var o1 = 1 - phase(p, 0.06, 0.22);
+      var y1 = lerp(0, -40, phase(p, 0.06, 0.26));
+      var o2 = phase(p, 0.36, 0.52) * (1 - phase(p, 0.62, 0.72));
+      var y2 = lerp(44, 0, phase(p, 0.36, 0.56));
 
-      /* 4 · plocha Linen vyjede zdola */
-      var sheet = lerp(100, 0, ease(phase(p, 0.82, 1)));
+      /* 4 · plocha Linen vyjede zdola a nese na sobě tvrzení.
+         Titulek se odhaluje spolu s ní, aby mezi videem a textem
+         nezůstala prázdná obrazovka, a pak se drží. */
+      var sheetP = ease(phase(p, 0.66, 0.82));
+      var sheet = lerp(100, 0, sheetP);
 
-      var st = stage.style;
+      var claimP = ease(phase(p, 0.70, 0.86));
+      var claimO = claimP;
+      var claimY = lerp(30, 0, claimP);
+      var claimS = lerp(0.96, 1, claimP);
+      var lineY = lerp(115, 0, ease(phase(p, 0.72, 0.87)));
+      var lineY2 = lerp(115, 0, ease(phase(p, 0.75, 0.90)));
+
       st.setProperty("--frame-w", w.toFixed(2) + "vw");
       st.setProperty("--frame-h", h.toFixed(2) + "vh");
       st.setProperty("--frame-r", r.toFixed(1) + "px");
@@ -283,8 +293,15 @@
       st.setProperty("--o2", o2.toFixed(3));
       st.setProperty("--y2", y2.toFixed(1) + "px");
       st.setProperty("--sheet", sheet.toFixed(2) + "%");
+      st.setProperty("--claim-o", claimO.toFixed(3));
+      st.setProperty("--claim-y", claimY.toFixed(1) + "px");
+      st.setProperty("--claim-s", claimS.toFixed(3));
 
-      if (nav) nav.setAttribute("data-over-stage", String(p < 0.88));
+      var rows = stage.querySelectorAll(".claim .lines__row i");
+      if (rows[0]) rows[0].style.setProperty("--line-y", lineY.toFixed(1) + "%");
+      if (rows[1]) rows[1].style.setProperty("--line-y", lineY2.toFixed(1) + "%");
+
+      if (nav) nav.setAttribute("data-over-stage", String(p < 0.78));
     };
 
     var onStageScroll = function () {
@@ -315,6 +332,20 @@
       window.addEventListener("scroll", tryPlay, { once: true, passive: true });
     }
   }
+
+  /* Bez animací (nebo bez scény) musí být tvrzení rovnou vidět
+     a navigace ve světlé podobě. */
+  if (!stage || reduced) {
+    if (nav) nav.removeAttribute("data-over-stage");
+    if (stage) {
+      var sst = stage.style;
+      sst.setProperty("--claim-o", "1");
+      sst.setProperty("--claim-y", "0px");
+      sst.setProperty("--claim-s", "1");
+      sst.setProperty("--sheet", "0%");
+    }
+  }
+
 
   /* ------------------------------------------------------------------
      Otvírací sekvence — rýsování značky

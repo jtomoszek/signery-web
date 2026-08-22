@@ -1564,7 +1564,7 @@ body[data-menu-open="true"] { overflow: hidden; }
    Video drží 80 % šířky, scrollem povyroste do plné plochy a roste do středu.
    Teprve pak se rozostří a ustoupí ploše Linen.
    -------------------------------------------------------------------------- */
-.stage { position: relative; height: 340vh; background: var(--olive); }
+.stage { position: relative; height: 420vh; background: var(--olive); }
 
 .stage__sticky {
   position: sticky; top: 0; height: 100vh; overflow: hidden;
@@ -1688,16 +1688,28 @@ body[data-menu-open="true"] { overflow: hidden; }
   100% { transform: scaleY(0); transform-origin: bottom; }
 }
 
-/* Plocha Linen vyjede zdola a převezme stránku */
+/* Plocha Linen vyjede zdola a rovnou na sobě nese tvrzení */
 .stage__sheet {
   position: absolute; inset: 0; z-index: 4;
   background: var(--linen);
   transform: translateY(var(--sheet, 100%));
   will-change: transform;
+  display: grid; place-items: center;
+  padding-inline: clamp(20px, 5vw, 48px);
 }
 
+.claim {
+  text-align: center;
+  opacity: var(--claim-o, 0);
+  transform: translateY(var(--claim-y, 30px)) scale(var(--claim-s, 0.96));
+  will-change: transform, opacity;
+}
+.claim__eyebrow { display: block; margin-bottom: clamp(20px, 2.4vw, 32px); }
+.claim__title { margin-inline: auto; max-width: 20ch; }
+.claim__soft { color: var(--moss); }
+
 @media (max-width: 780px) {
-  .stage { height: 300vh; }
+  .stage { height: 360vh; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1944,32 +1956,14 @@ body[data-intro="true"] { overflow: hidden; }
 }
 
 /* --------------------------------------------------------------------------
-   27 · Tvrzení — titulek odhalovaný po řádcích
-   Každý řádek sedí v masce a vyjede zpod ní. Bez JS zůstává čitelný.
+   27 · Řádky odhalované zpod masky
+   Používá je tvrzení na ploše Linen v úvodní scéně.
    -------------------------------------------------------------------------- */
-.statement-scene {
-  padding-block: clamp(96px, 15vw, 200px);
-  text-align: center;
-}
-.statement-scene__eyebrow { display: block; margin-bottom: clamp(24px, 3vw, 40px); }
-
-.lines { margin-inline: auto; max-width: 20ch; }
 .lines__row { display: block; overflow: hidden; }
 .lines__row i {
   display: block;
   font-style: normal;
-  transform: translateY(115%);
-  transition: transform 1.05s cubic-bezier(0.16, 0.84, 0.24, 1);
-}
-.lines__row:nth-child(2) i { transition-delay: 0.12s; }
-.lines__row:nth-child(3) i { transition-delay: 0.24s; }
-
-.js [data-reveal].lines { opacity: 1; transform: none; }
-.js [data-reveal].lines.is-in .lines__row i,
-.no-js .lines__row i { transform: none; }
-
-@media (prefers-reduced-motion: reduce) {
-  .lines__row i { transform: none; transition: none; }
+  transform: translateY(var(--line-y, 0%));
 }
 
 /* --------------------------------------------------------------------------
