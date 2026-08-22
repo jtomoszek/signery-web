@@ -282,6 +282,7 @@
       var lineY = lerp(115, 0, ease(phase(p, 0.72, 0.87)));
       var lineY2 = lerp(115, 0, ease(phase(p, 0.75, 0.90)));
 
+      var st = stage.style;
       st.setProperty("--frame-w", w.toFixed(2) + "vw");
       st.setProperty("--frame-h", h.toFixed(2) + "vh");
       st.setProperty("--frame-r", r.toFixed(1) + "px");
