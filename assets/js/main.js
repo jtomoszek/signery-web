@@ -237,6 +237,11 @@
 
       var rect = stage.getBoundingClientRect();
       var travel = stage.offsetHeight - sticky.offsetHeight;
+
+      /* Než proběhne layout, jsou výšky nulové — dělením nulou by vznikly
+         NaN a scéna by se rozsypala. V tu chvíli platí výchozí hodnoty z CSS. */
+      if (!(travel > 0)) return;
+
       var p = clamp(-rect.top / travel, 0, 1);
 
       var narrow = window.innerWidth < 780;
@@ -313,6 +318,8 @@
 
     window.addEventListener("scroll", onStageScroll, { passive: true });
     window.addEventListener("resize", onStageScroll);
+    /* Až load máme jisté rozměry — písma i video mohou layout ještě posunout. */
+    window.addEventListener("load", onStageScroll);
     renderStage();
 
     /* Autoplay bývá zablokovaný, dokud uživatel se stránkou neinteraguje */
