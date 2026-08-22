@@ -425,8 +425,8 @@ h1, h2, h3, h4 {
    08 · Navigace — plovoucí pilulka
    -------------------------------------------------------------------------- */
 .nav-outer {
-  position: sticky;
-  top: 0;
+  position: fixed;
+  inset: 0 0 auto 0;
   z-index: 100;
   padding: 14px clamp(16px, 3vw, 28px);
   background: linear-gradient(var(--linen) 62%, rgba(240, 234, 222, 0));
@@ -1557,4 +1557,381 @@ body[data-menu-open="true"] { overflow: hidden; }
   .sig__path { transition: none; stroke-dashoffset: 0; }
   .is-in .envelope__flow { animation: none; opacity: 0.75; }
   .rail__line::after { transition: none; }
+}
+
+/* --------------------------------------------------------------------------
+   24 · ÚVODNÍ SCÉNA — video
+   Video drží 80 % šířky, scrollem povyroste do plné plochy a roste do středu.
+   Teprve pak se rozostří a ustoupí ploše Linen.
+   -------------------------------------------------------------------------- */
+.stage { position: relative; height: 340vh; background: var(--olive); }
+
+.stage__sticky {
+  position: sticky; top: 0; height: 100vh; overflow: hidden;
+  display: grid; place-items: center;
+}
+
+/* place-items:center → rám roste na všechny strany od středu */
+.stage__media {
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+}
+
+.stage__frame {
+  position: relative;
+  width: var(--frame-w, 80vw);
+  height: var(--frame-h, 45vw);
+  border-radius: var(--frame-r, 20px);
+  overflow: hidden;
+  will-change: transform, filter;
+  filter: blur(var(--blur, 0px));
+  box-shadow: 0 50px 130px rgba(0, 0, 0, 0.5);
+}
+
+.stage__video {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; object-fit: cover;
+  transform: scale(var(--img-s, 1));
+  /* Sytější a kontrastnější obraz — text nad ním pak drží */
+  filter: saturate(1.22) contrast(1.06) brightness(0.94);
+}
+
+/* Zelený nádech — stáhne obraz do palety značky */
+.stage__tint {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(150deg, rgba(112,112,78,.75), rgba(55,55,27,.65));
+  mix-blend-mode: soft-light;
+}
+
+/* Filmové zrno — jemný artový rozklad, drží text čitelný */
+.stage__grain {
+  position: absolute; inset: -120%; pointer-events: none;
+  opacity: 0.26;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 1s steps(6) infinite;
+}
+@keyframes grain {
+  0%   { transform: translate(0, 0); }
+  20%  { transform: translate(-3%, 2%); }
+  40%  { transform: translate(2%, -3%); }
+  60%  { transform: translate(-2%, -2%); }
+  80%  { transform: translate(3%, 1%); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Závoj pro čitelnost titulku */
+.stage__veil {
+  position: absolute; inset: 0; pointer-events: none;
+  background: var(--olive);
+  opacity: var(--veil, 0.32);
+}
+
+/* Ztmavení horního pásu, aby navigace držela kontrast i nad světlým záběrem */
+.stage__scrim {
+  position: absolute; inset: 0 0 auto 0; height: 190px; z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(rgba(24, 24, 10, 0.62), rgba(24, 24, 10, 0));
+}
+
+.stage__copy {
+  position: relative; z-index: 2;
+  width: 100%; max-width: var(--wrap);
+  padding-inline: clamp(20px, 5vw, 48px);
+  text-align: center; color: var(--linen);
+  display: grid; place-items: center;
+  pointer-events: none;
+}
+.stage__layer { grid-area: 1 / 1; }
+.stage__copy .display { color: var(--linen); text-shadow: 0 2px 40px rgba(0,0,0,.35); }
+
+.stage__one { opacity: var(--o1, 1); transform: translateY(var(--y1, 0px)); }
+.stage__two {
+  opacity: var(--o2, 0); transform: translateY(var(--y2, 44px));
+  display: grid; justify-items: center;
+}
+.stage__eyebrow { display: block; margin-bottom: 26px; color: var(--sage); }
+.stage__sub {
+  margin-top: 26px; max-width: 48ch; margin-inline: auto;
+  color: rgba(240, 234, 222, 0.82);
+}
+.stage__actions {
+  margin-top: 36px; display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;
+  pointer-events: auto;
+}
+.stage__actions .btn--ghost { color: var(--linen); border-color: rgba(240,234,222,.4); }
+.stage__actions .btn--ghost:hover { border-color: var(--linen); background: rgba(240,234,222,.1); }
+
+.stage__scroll {
+  position: absolute; left: 50%; bottom: 42px; transform: translateX(-50%);
+  z-index: 3; display: grid; justify-items: center; gap: 10px;
+  font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.14em;
+  text-transform: uppercase; color: rgba(240, 234, 222, 0.7);
+  opacity: var(--o1, 1); pointer-events: none;
+}
+.stage__scroll i {
+  display: block; width: 1px; height: 34px;
+  background: linear-gradient(rgba(240,234,222,.75), transparent);
+  animation: drop 2.2s var(--ease) infinite;
+}
+@keyframes drop {
+  0%   { transform: scaleY(0); transform-origin: top; }
+  55%  { transform: scaleY(1); transform-origin: top; }
+  56%  { transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+/* Plocha Linen vyjede zdola a převezme stránku */
+.stage__sheet {
+  position: absolute; inset: 0; z-index: 4;
+  background: var(--linen);
+  transform: translateY(var(--sheet, 100%));
+  will-change: transform;
+}
+
+@media (max-width: 780px) {
+  .stage { height: 300vh; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage { height: auto; background: var(--olive); }
+  .stage__sticky { position: static; height: auto; padding-block: clamp(80px, 12vw, 140px); }
+  .stage__media { position: relative; inset: auto; margin-bottom: 40px; }
+  .stage__frame { width: min(92vw, var(--wrap)); height: auto; aspect-ratio: 16 / 9; filter: none; }
+  .stage__grain { animation: none; }
+  .stage__one { display: none; }
+  .stage__two { opacity: 1; transform: none; }
+  .stage__scroll, .stage__sheet { display: none; }
+}
+
+/* --------------------------------------------------------------------------
+   25 · Navigace nad scénou
+   Navigace je fixní, aby video sahalo až k hornímu okraji. Dokud běží scéna,
+   je pilulka tmavá a průsvitná; jakmile ji překryje plocha Linen, vrátí se
+   do běžné podoby.
+   -------------------------------------------------------------------------- */
+body { padding-top: 92px; }
+body.has-stage { padding-top: 0; }
+
+.nav-outer { transition: background-color 0.4s var(--ease); }
+.nav-outer[data-over-stage="true"] { background: none; }
+.nav { transition: background-color 0.4s var(--ease), box-shadow 0.4s var(--ease); }
+
+.nav-outer[data-over-stage="true"] .nav {
+  background: rgba(30, 30, 14, 0.22);
+  box-shadow: none;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+.nav-outer[data-over-stage="true"] .logo__img { filter: brightness(0) invert(1); opacity: 0.95; }
+.nav-outer[data-over-stage="true"] .nav__link { color: rgba(240, 234, 222, 0.82); }
+.nav-outer[data-over-stage="true"] .nav__link:hover,
+.nav-outer[data-over-stage="true"] .nav__link[aria-current="page"] {
+  color: var(--linen); background: rgba(240, 234, 222, 0.16);
+}
+.nav-outer[data-over-stage="true"] .nav__cta { background: var(--linen); color: var(--olive); }
+.nav-outer[data-over-stage="true"] .nav__cta:hover { background: var(--white); }
+.nav-outer[data-over-stage="true"] .nav__toggle { border-color: rgba(240, 234, 222, 0.4); }
+.nav-outer[data-over-stage="true"] .nav__toggle span { background: var(--linen); }
+
+/* --------------------------------------------------------------------------
+   26 · Čistá plocha — konec bílých boxů
+   Sekce leží přímo na ploše Linen, oddělují je mezery a vlasové linky.
+   -------------------------------------------------------------------------- */
+.hero__panel,
+.footer__panel {
+  background: none;
+  box-shadow: none;
+  border-radius: 0;
+  padding-inline: 0;
+}
+
+.panel {
+  background: none;
+  box-shadow: none;
+  border-radius: 0;
+  padding-inline: 0;
+}
+/* Barevné plochy zůstávají — nesou vlastní sdělení */
+.panel--olive,
+.panel--moss,
+.panel--sage {
+  border-radius: var(--r-lg);
+  padding: clamp(28px, 4vw, 56px);
+}
+.panel--olive { background: var(--olive); }
+.panel--moss  { background: var(--moss); }
+.panel--sage  { background: var(--sage); }
+
+.panel--soft {
+  background: none;
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-radius: 0;
+  padding: clamp(32px, 4vw, 56px) 0 0;
+}
+
+.card {
+  background: none;
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-radius: 0;
+  padding: clamp(22px, 2.6vw, 30px) 0 0;
+  box-shadow: none;
+}
+.card--link:hover { transform: none; box-shadow: none; }
+.card--link:hover .h3 { color: var(--moss); }
+.card--soft { background: none; }
+/* Barevné karty si drží plochu */
+.card--sage, .card--olive {
+  border-top: 0;
+  border-radius: var(--r-lg);
+  padding: clamp(24px, 3vw, 34px);
+}
+.card--sage { background: var(--sage); }
+.card--olive { background: var(--olive); }
+
+.metric {
+  background: none;
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-radius: 0;
+  padding: 24px 0 0;
+}
+
+.case {
+  background: none;
+  border: 0;
+  border-radius: 0;
+}
+.case__media { border-radius: var(--r-md); }
+.case__body { padding: 22px 0 0; }
+
+.tabs__list { background: none; border-color: var(--line); }
+
+.field input,
+.field select,
+.field textarea {
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--line-strong);
+  border-radius: 0;
+  padding: 12px 0;
+}
+.field input:focus,
+.field select:focus,
+.field textarea:focus { border-color: var(--moss); }
+
+.footer { padding-top: 0; }
+.footer__panel { border-top: 1px solid var(--line); padding-top: clamp(32px, 4vw, 56px); }
+
+/* --------------------------------------------------------------------------
+   18 · Otvírací sekvence — rýsování značky
+   Oblouk je výřez z písmene „n" ve wordmarku (shodná souřadná soustava),
+   takže se dá vykreslit přesně na svém místě a nechat kolem něj dorůst
+   zbytek loga. Kóty a osy odkazují na jazyk technického výkresu.
+   -------------------------------------------------------------------------- */
+.intro {
+  position: fixed; inset: 0; z-index: 500;
+  display: grid; place-items: center;
+  background: var(--olive);
+  color: var(--sage);
+  transition: transform 0.9s var(--ease), opacity 0.6s var(--ease);
+}
+.intro[data-done="true"] { transform: translateY(-100%); opacity: 0; }
+.intro[hidden] { display: none; }
+
+/* Během sekvence se pod ní nescrolluje */
+body[data-intro="true"] { overflow: hidden; }
+
+.intro__inner { width: min(760px, 84vw); display: grid; justify-items: center; gap: 26px; }
+.intro__svg { width: 100%; height: auto; overflow: visible; }
+
+/* Sekvence začíná detailem na oblouku a odjede, až kolem něj doroste wordmark.
+   Střed oblouku je v souřadnicích výkresu na 346,25 × 88,68 z 689 × 198. */
+.intro__zoom {
+  transform-box: view-box;
+  transform-origin: 50.25% 44.8%;
+  transform: scale(2.15);
+}
+.is-drawing .intro__zoom { animation: introZoom .95s var(--ease) 1.7s forwards; }
+@keyframes introZoom { to { transform: scale(1); } }
+
+/* --- pomocné čáry ------------------------------------------------------- */
+.intro__guides line { stroke-width: 1; }
+.intro__guides line,
+.intro__guides circle { opacity: 0; }
+
+.intro__guides line {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.is-drawing .g-base  { animation: gLine .55s var(--ease) .10s forwards; opacity: .34; }
+.is-drawing .g-axis  { animation: gLine .55s var(--ease) .18s forwards; opacity: .26; }
+.is-drawing .g-dim   { animation: gLine .5s  var(--ease) .34s forwards; opacity: .8; }
+.is-drawing .g-tick  { animation: gLine .3s  var(--ease) .42s forwards; opacity: .8; }
+.is-drawing .g-rad   { animation: gLine .4s  var(--ease) 1.10s forwards; opacity: .8; }
+.is-drawing .g-dot   { animation: gFade .3s var(--ease) 1.10s forwards; }
+
+@keyframes gLine { to { stroke-dashoffset: 0; } }
+@keyframes gFade { to { opacity: .9; } }
+
+/* --- popisky kót -------------------------------------------------------- */
+.intro__labels text {
+  font-family: var(--font-text);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  opacity: 0;
+}
+.is-drawing .intro__labels text { animation: gFade .4s var(--ease) .58s forwards; }
+.is-drawing .intro__labels text:last-child { animation-delay: 1.25s; }
+
+/* --- oblouk: nejdřív obrys, pak výplň ----------------------------------- */
+.intro__arch path {
+  fill: var(--linen);
+  fill-opacity: 0;
+  stroke: var(--sage);
+  stroke-width: 1.4;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.is-drawing .intro__arch path {
+  animation: gLine 1s var(--ease) .40s forwards,
+             archFill .55s var(--ease) 1.5s forwards;
+}
+@keyframes archFill { to { fill-opacity: 1; stroke-opacity: 0; } }
+
+/* --- zbytek wordmarku dorůstá kolem ------------------------------------- */
+.intro__rest path { fill: var(--linen); opacity: 0; }
+.is-drawing .intro__rest path { animation: gFade1 .55s var(--ease) 1.95s forwards; }
+@keyframes gFade1 { to { opacity: 1; } }
+
+/* Kóty po dokreslení ustoupí */
+.is-drawing .intro__guides,
+.is-drawing .intro__labels { animation: guidesOut .5s var(--ease) 1.85s forwards; }
+@keyframes guidesOut { to { opacity: 0; } }
+
+.intro__caption {
+  font-size: 0.75rem; letter-spacing: 0.09em; text-transform: uppercase;
+  color: rgba(240, 234, 222, 0.45);
+  opacity: 0;
+}
+.intro__caption b { color: var(--sage); font-weight: 500; }
+.is-drawing .intro__caption { animation: gFade1 .5s var(--ease) 2.35s forwards; }
+
+.intro__skip {
+  position: absolute; right: clamp(16px, 4vw, 32px); bottom: clamp(16px, 4vw, 32px);
+  padding: 10px 18px;
+  background: transparent; border: 1px solid rgba(240, 234, 222, 0.25);
+  border-radius: var(--r-pill); color: rgba(240, 234, 222, 0.7);
+  font-family: var(--font-text); font-size: 0.6875rem; font-weight: 700;
+  letter-spacing: 0.09em; text-transform: uppercase; cursor: pointer;
+  transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+.intro__skip:hover { color: var(--linen); border-color: rgba(240, 234, 222, 0.6); }
+
+@media (prefers-reduced-motion: reduce) {
+  .intro { display: none; }
 }

@@ -215,6 +215,181 @@
     el.textContent = String(new Date().getFullYear());
   });
 
+  /* ---------------------------------------------------------------------
+     Úvodní scéna — video
+     Video drží 80 % šířky, scrollem povyroste do plné plochy (roste do středu),
+     pak se rozostří a ustoupí ploše Linen.
+     --------------------------------------------------------------------- */
+  var clamp = function (v, a, b) { return Math.min(Math.max(v, a), b); };
+  var lerp = function (a, b, t) { return a + (b - a) * t; };
+  var phase = function (p, a, b) { return clamp((p - a) / (b - a), 0, 1); };
+  var ease = function (t) { return 1 - Math.pow(1 - t, 3); };
+
+  var stage = document.querySelector("[data-stage]");
+  var nav = document.querySelector(".nav-outer");
+
+  if (stage && !reduced) {
+    var sticky = stage.querySelector(".stage__sticky");
+    var stageTicking = false;
+
+    var renderStage = function () {
+      stageTicking = false;
+
+      var rect = stage.getBoundingClientRect();
+      var travel = stage.offsetHeight - sticky.offsetHeight;
+      var p = clamp(-rect.top / travel, 0, 1);
+
+      var narrow = window.innerWidth < 780;
+
+      /* 1 · video povyroste — jen o ten kousek, ze středu.
+         Roste zároveň na šířku i na výšku, aby na konci vyplnilo celou plochu. */
+      var grow = ease(phase(p, 0, 0.40));
+
+      var startW = narrow ? 92 : 80;                       // ve vw
+      var ratio = narrow ? 4 / 3 : 9 / 16;                 // výška ku šířce
+      var startHpx = Math.min(
+        window.innerWidth * startW / 100 * ratio,
+        window.innerHeight * (narrow ? 0.72 : 0.80)
+      );
+      var startH = startHpx / window.innerHeight * 100;    // ve vh
+
+      var w = lerp(startW, 100, grow);
+      var h = lerp(startH, 100, grow);
+      var r = lerp(20, 0, phase(p, 0.18, 0.40));
+      var imgS = lerp(1.06, 1, grow);
+
+      /* 2 · rozostření a ztmavení */
+      var blur = lerp(0, 20, phase(p, 0.38, 0.62));
+      var veil = lerp(0.32, 0.58, phase(p, 0.32, 0.66));
+
+      /* 3 · první titulek mizí, druhý přichází */
+      var o1 = 1 - phase(p, 0.10, 0.30);
+      var y1 = lerp(0, -40, phase(p, 0.10, 0.34));
+      var o2 = phase(p, 0.48, 0.68) * (1 - phase(p, 0.86, 0.95));
+      var y2 = lerp(44, 0, phase(p, 0.48, 0.72));
+
+      /* 4 · plocha Linen vyjede zdola */
+      var sheet = lerp(100, 0, ease(phase(p, 0.82, 1)));
+
+      var st = stage.style;
+      st.setProperty("--frame-w", w.toFixed(2) + "vw");
+      st.setProperty("--frame-h", h.toFixed(2) + "vh");
+      st.setProperty("--frame-r", r.toFixed(1) + "px");
+      st.setProperty("--img-s", imgS.toFixed(3));
+      st.setProperty("--blur", blur.toFixed(1) + "px");
+      st.setProperty("--veil", veil.toFixed(3));
+      st.setProperty("--o1", o1.toFixed(3));
+      st.setProperty("--y1", y1.toFixed(1) + "px");
+      st.setProperty("--o2", o2.toFixed(3));
+      st.setProperty("--y2", y2.toFixed(1) + "px");
+      st.setProperty("--sheet", sheet.toFixed(2) + "%");
+
+      if (nav) nav.setAttribute("data-over-stage", String(p < 0.88));
+    };
+
+    var onStageScroll = function () {
+      if (stageTicking) return;
+      stageTicking = true;
+      requestAnimationFrame(renderStage);
+    };
+
+    window.addEventListener("scroll", onStageScroll, { passive: true });
+    window.addEventListener("resize", onStageScroll);
+    renderStage();
+
+    /* Autoplay bývá zablokovaný, dokud uživatel se stránkou neinteraguje */
+    var vid = stage.querySelector("video");
+    if (vid) {
+      /* Zdroj volíme v JS — atribut media u <source> prohlížeče vyhodnotí
+         jen jednou při načtení a po změně šířky okna ho nepřepočítají. */
+      var wide = window.matchMedia("(min-width: 900px)").matches;
+      var pick = vid.getAttribute(wide ? "data-src-lg" : "data-src-sm");
+      if (pick && vid.getAttribute("src") !== pick) vid.setAttribute("src", pick);
+
+      var tryPlay = function () {
+        var pr = vid.play();
+        if (pr && pr.catch) pr.catch(function () {});
+      };
+      tryPlay();
+      window.addEventListener("pointerdown", tryPlay, { once: true });
+      window.addEventListener("scroll", tryPlay, { once: true, passive: true });
+    }
+  }
+
+  /* ------------------------------------------------------------------
+     Otvírací sekvence — rýsování značky
+     Poběží jen jednou; kdykoli se dá přeskočit klávesou, klikem i scrollem.
+     ------------------------------------------------------------------ */
+  var intro = document.querySelector("[data-intro]");
+
+  if (intro) {
+    var DURATION = 3600;          // musí sedět s posledním delayem v CSS
+    var SEEN_KEY = "signery-intro-seen";
+    var closed = true;
+    var timer = null;
+
+    var seen = function () {
+      try { return sessionStorage.getItem(SEEN_KEY) === "1"; } catch (e) { return false; }
+    };
+    var markSeen = function () {
+      try { sessionStorage.setItem(SEEN_KEY, "1"); } catch (e) {}
+    };
+
+    var closeIntro = function () {
+      if (closed) return;
+      closed = true;
+      window.clearTimeout(timer);
+      intro.setAttribute("data-done", "true");
+      document.body.removeAttribute("data-intro");
+      window.setTimeout(function () { intro.hidden = true; }, 950);
+      window.removeEventListener("keydown", onSkipKey);
+      window.removeEventListener("wheel", closeIntro);
+      window.removeEventListener("touchstart", closeIntro);
+    };
+
+    var onSkipKey = function (e) {
+      if (e.key === "Escape" || e.key === " " || e.key === "Enter") closeIntro();
+    };
+
+    var playIntro = function () {
+      closed = false;
+      markSeen();
+
+      intro.hidden = false;
+      intro.removeAttribute("data-done");
+      document.body.setAttribute("data-intro", "true");
+      /* Scroll na začátek, ať sekvence nezačne uprostřed stránky */
+      window.scrollTo(0, 0);
+
+      /* Restart animací */
+      intro.classList.remove("is-drawing");
+      void intro.offsetWidth;
+
+      window.addEventListener("keydown", onSkipKey);
+      window.addEventListener("wheel", closeIntro, { passive: true });
+      window.addEventListener("touchstart", closeIntro, { passive: true });
+
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () { intro.classList.add("is-drawing"); });
+      });
+
+      timer = window.setTimeout(closeIntro, DURATION);
+    };
+
+    var skipBtn = intro.querySelector("[data-intro-skip]");
+    if (skipBtn) skipBtn.addEventListener("click", closeIntro);
+
+    /* Přehraje se jednou za návštěvu; v náhledu jde spustit znovu tlačítkem. */
+    if (reduced || seen()) {
+      intro.hidden = true;
+    } else {
+      playIntro();
+    }
+
+    var replayBtn = document.querySelector("[data-intro-replay]");
+    if (replayBtn) replayBtn.addEventListener("click", playIntro);
+  }
+
   initReveal(document);
   initCounters(document);
 
