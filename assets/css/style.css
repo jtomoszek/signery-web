@@ -427,7 +427,7 @@ h1, h2, h3, h4 {
 .nav-outer {
   position: fixed;
   inset: 0 0 auto 0;
-  z-index: 100;
+  z-index: 401;   /* nad zrnem — ovládání webu zůstává ostré */
   padding: 14px clamp(16px, 3vw, 28px);
   background: linear-gradient(var(--linen) 62%, rgba(240, 234, 222, 0));
 }
@@ -1613,9 +1613,9 @@ body[data-menu-open="true"] { overflow: hidden; }
 /* Filmové zrno — jemný artový rozklad, drží text čitelný */
 .stage__grain {
   position: absolute; inset: -120%; pointer-events: none;
-  opacity: 0.52;
+  opacity: 0.72;
   mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.62' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='2.4' intercept='-0.5'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.52' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='3' intercept='-0.62'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23n)'/%3E%3C/svg%3E");
   animation: grain 1s steps(6) infinite;
 }
 @keyframes grain {
@@ -1941,4 +1941,53 @@ body[data-intro="true"] { overflow: hidden; }
 
 @media (prefers-reduced-motion: reduce) {
   .intro { display: none; }
+}
+
+/* --------------------------------------------------------------------------
+   27 · Tvrzení — titulek odhalovaný po řádcích
+   Každý řádek sedí v masce a vyjede zpod ní. Bez JS zůstává čitelný.
+   -------------------------------------------------------------------------- */
+.statement-scene {
+  padding-block: clamp(96px, 15vw, 200px);
+  text-align: center;
+}
+.statement-scene__eyebrow { display: block; margin-bottom: clamp(24px, 3vw, 40px); }
+
+.lines { margin-inline: auto; max-width: 20ch; }
+.lines__row { display: block; overflow: hidden; }
+.lines__row i {
+  display: block;
+  font-style: normal;
+  transform: translateY(115%);
+  transition: transform 1.05s cubic-bezier(0.16, 0.84, 0.24, 1);
+}
+.lines__row:nth-child(2) i { transition-delay: 0.12s; }
+.lines__row:nth-child(3) i { transition-delay: 0.24s; }
+
+.js [data-reveal].lines { opacity: 1; transform: none; }
+.js [data-reveal].lines.is-in .lines__row i,
+.no-js .lines__row i { transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lines__row i { transform: none; transition: none; }
+}
+
+/* --------------------------------------------------------------------------
+   28 · Zrno přes celou stránku
+   Jemná vrstva přes celý web — sjednotí fotografie s plochou Linen
+   a dá webu tištěný, artový tón. Nezachytává kliknutí.
+   -------------------------------------------------------------------------- */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  pointer-events: none;
+  opacity: 0.17;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='1.5' intercept='-0.52'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::after { opacity: 0.1; }
 }
