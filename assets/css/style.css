@@ -1592,23 +1592,30 @@ body[data-menu-open="true"] { overflow: hidden; }
   position: absolute; inset: 0;
   width: 100%; height: 100%; object-fit: cover;
   transform: scale(var(--img-s, 1));
-  /* Sytější a kontrastnější obraz — text nad ním pak drží */
-  filter: saturate(1.22) contrast(1.06) brightness(0.94);
+  /* Odbarvíme, aby duotón níž mohl obraz přebarvit do palety značky */
+  filter: grayscale(1) contrast(1.12) brightness(0.96);
 }
 
-/* Zelený nádech — stáhne obraz do palety značky */
+/* Duotón — obraz převezme barevnost značky.
+   Odbarvené video drží jas, tato vrstva mu dodá odstín Moss → Olive Deep. */
 .stage__tint {
   position: absolute; inset: 0; pointer-events: none;
-  background: linear-gradient(150deg, rgba(112,112,78,.75), rgba(55,55,27,.65));
-  mix-blend-mode: soft-light;
+  background: linear-gradient(155deg, var(--sage), var(--moss) 45%, var(--olive));
+  mix-blend-mode: color;
+}
+/* Prohloubení stínů, ať obraz není plochý */
+.stage__tone {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(155deg, rgba(112,112,78,.42), rgba(55,55,27,.58));
+  mix-blend-mode: multiply;
 }
 
 /* Filmové zrno — jemný artový rozklad, drží text čitelný */
 .stage__grain {
   position: absolute; inset: -120%; pointer-events: none;
-  opacity: 0.26;
+  opacity: 0.52;
   mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.62' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='2.4' intercept='-0.5'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23n)'/%3E%3C/svg%3E");
   animation: grain 1s steps(6) infinite;
 }
 @keyframes grain {
