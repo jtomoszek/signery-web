@@ -2058,3 +2058,10 @@ body::after {
   .rail__step { opacity: 1; }
   .rail__line::after { width: 100%; height: 100%; }
 }
+
+/* --------------------------------------------------------------------------
+   30 · Kontaktní formulář na celou šířku sekce
+   Vedle formuláře už nic nestojí, proto ho držíme v pohodlné míře čtení
+   a centrujeme — přes celou šířku stránky by se řádky rozpadly.
+   -------------------------------------------------------------------------- */
+.form-single { max-width: 760px; margin-inline: auto; }
