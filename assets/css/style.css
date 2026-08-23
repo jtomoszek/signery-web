@@ -27,6 +27,8 @@
   --sage-40: #dfdfd3;
   --sage-20: #efefe9;
   --linen-50: #f7f5ef;
+  /* Plocha karet — 30 % Sage v Linen, mezi pozadím a akcentní kartou */
+  --surface-tint: #ddd8c7;
 
   /* Sémantika */
   --bg: var(--linen);
@@ -440,9 +442,19 @@ h1, h2, h3, h4 {
   justify-content: space-between;
   gap: 24px;
   padding: 10px 12px 10px 24px;
-  background: var(--white);
   border-radius: var(--r-pill);
-  box-shadow: var(--shadow-soft);
+
+  /* Sklo — obsah pod pilulkou prosvítá rozostřený */
+  background: rgba(252, 250, 245, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(20px) saturate(1.6);
+  -webkit-backdrop-filter: blur(20px) saturate(1.6);
+  box-shadow: 0 1px 2px rgba(55, 55, 27, 0.04), 0 14px 36px rgba(55, 55, 27, 0.07);
+}
+
+/* Prohlížeče bez backdrop-filter dostanou plnou plochu, ať zůstane čitelná */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .nav { background: rgba(252, 250, 245, 0.96); }
 }
 
 .nav__links {
@@ -670,6 +682,7 @@ body[data-menu-open="true"] { overflow: hidden; }
   z-index: 0;
 }
 .card--arched > * { position: relative; z-index: 1; }
+.card--arched::after { background: rgba(255, 255, 255, 0.38); }
 .card--sage.card--arched::after { background: rgba(255, 255, 255, 0.22); }
 .card--olive.card--arched::after { background: rgba(112, 112, 78, 0.5); }
 
@@ -1801,16 +1814,15 @@ body.has-stage { padding-top: 0; }
 }
 
 .card {
-  background: none;
+  background: var(--surface-tint);
   border: 0;
-  border-top: 1px solid var(--line);
-  border-radius: 0;
-  padding: clamp(22px, 2.6vw, 30px) 0 0;
+  border-radius: var(--r-lg);
+  padding: clamp(24px, 3vw, 34px);
   box-shadow: none;
 }
 .card--link:hover { transform: none; box-shadow: none; }
 .card--link:hover .h3 { color: var(--moss); }
-.card--soft { background: none; }
+.card--soft { background: var(--surface-tint); }
 /* Barevné karty si drží plochu */
 .card--sage, .card--olive {
   border-top: 0;
