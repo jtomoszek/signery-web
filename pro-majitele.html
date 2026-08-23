@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Poppins:wght@300;400;500;600&display=swap">
-<link rel="stylesheet" href="assets/css/style.css?v=202608231102">
+<link rel="stylesheet" href="assets/css/style.css?v=202608231148">
 <script>document.documentElement.className = document.documentElement.className.replace('no-js', 'js');</script>
 </head>
 <body>
@@ -157,32 +157,35 @@
   <!-- ================= JAK TO PROBÍHÁ ================= -->
   <section class="section" id="postup">
     <div class="wrap">
-      <div class="section-head section-head--split">
-        <div class="section-head__text">
-          <span class="label" data-reveal>Postup</span>
-          <h2 class="h2 measure" data-reveal data-reveal-delay="60">Čtyři kroky. Nic víc po vás nechceme.</h2>
+        <div class="rail-scene" data-rail-scene>
+          <div class="rail-scene__sticky">
+          <div class="section-head section-head--split">
+            <div class="section-head__text">
+              <span class="label" data-reveal>Postup</span>
+              <h2 class="h2 measure" data-reveal data-reveal-delay="60">Čtyři kroky. Nic víc po vás nechceme.</h2>
+            </div>
+          </div>
+          <ol class="rail" data-rail>
+            <span class="rail__line" aria-hidden="true"></span>
+            <li class="rail__step" style="--d:.1s">
+              <span class="timeline__no">01</span><h3 class="h4">Ozvete se nám</h3>
+              <p class="body-sm">Stačí typ nemovitosti, adresa a k čemu průkaz potřebujete. Vrátíme se s cenou a termínem.</p>
+            </li>
+            <li class="rail__step" style="--d:.4s">
+              <span class="timeline__no">02</span><h3 class="h4">Pošlete podklady</h3>
+              <p class="body-sm">Půdorysy, informaci o vytápění a ohřevu vody. Když něco nemáte, poradíme, kde to sehnat.</p>
+            </li>
+            <li class="rail__step" style="--d:.7s">
+              <span class="timeline__no">03</span><h3 class="h4">Zaměříme, co je potřeba</h3>
+              <p class="body-sm">Pokud dokumentace nestačí, přijedeme budovu zaměřit. Obvykle to zabere jedno dopoledne.</p>
+            </li>
+            <li class="rail__step" style="--d:1s">
+              <span class="timeline__no">04</span><h3 class="h4">Dostanete průkaz</h3>
+              <p class="body-sm">PDF, soubor XML pro evidenci ministerstva a srozumitelné vysvětlení výsledku.</p>
+            </li>
+          </ol>
+          </div>
         </div>
-      </div>
-
-      <ol class="rail" data-reveal>
-        <span class="rail__line" aria-hidden="true"></span>
-        <li class="rail__step" style="--d:.1s">
-          <span class="timeline__no">01</span><h3 class="h4">Ozvete se nám</h3>
-          <p class="body-sm">Stačí typ nemovitosti, adresa a k čemu průkaz potřebujete. Vrátíme se s cenou a termínem.</p>
-        </li>
-        <li class="rail__step" style="--d:.4s">
-          <span class="timeline__no">02</span><h3 class="h4">Pošlete podklady</h3>
-          <p class="body-sm">Půdorysy, informaci o vytápění a ohřevu vody. Když něco nemáte, poradíme, kde to sehnat.</p>
-        </li>
-        <li class="rail__step" style="--d:.7s">
-          <span class="timeline__no">03</span><h3 class="h4">Zaměříme, co je potřeba</h3>
-          <p class="body-sm">Pokud dokumentace nestačí, přijedeme budovu zaměřit. Obvykle to zabere jedno dopoledne.</p>
-        </li>
-        <li class="rail__step" style="--d:1s">
-          <span class="timeline__no">04</span><h3 class="h4">Dostanete průkaz</h3>
-          <p class="body-sm">PDF, soubor XML pro evidenci ministerstva a srozumitelné vysvětlení výsledku.</p>
-        </li>
-      </ol>
     </div>
   </section>
 
@@ -357,6 +360,6 @@
   </div>
 </footer>
 
-<script src="assets/js/main.js?v=202608231102"></script>
+<script src="assets/js/main.js?v=202608231148"></script>
 </body>
 </html>

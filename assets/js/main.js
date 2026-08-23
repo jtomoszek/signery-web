@@ -228,6 +228,29 @@
   var stage = document.querySelector("[data-stage]");
   var nav = document.querySelector(".nav-outer");
 
+  /* Titulek na ploše Linen rozdělíme na písmena, aby se dal psát postupně.
+     Text zůstává čitelný pro odečítače — obal dostane aria-label. */
+  var claim = document.querySelector(".claim");
+  if (claim) {
+    var title = claim.querySelector(".claim__title");
+    if (title) {
+      title.setAttribute("aria-label", title.textContent.replace(/\s+/g, " ").trim());
+      var n = 0;
+      title.querySelectorAll(".lines__row i").forEach(function (line) {
+        var text = line.textContent;
+        line.textContent = "";
+        line.setAttribute("aria-hidden", "true");
+        text.split("").forEach(function (ch) {
+          var sp = document.createElement("span");
+          sp.className = "ltr";
+          sp.textContent = ch;
+          sp.style.setProperty("--i", n++);
+          line.appendChild(sp);
+        });
+      });
+    }
+  }
+
   if (stage && !reduced) {
     var sticky = stage.querySelector(".stage__sticky");
     var stageTicking = false;
@@ -284,8 +307,6 @@
       var claimO = claimP;
       var claimY = lerp(30, 0, claimP);
       var claimS = lerp(0.96, 1, claimP);
-      var lineY = lerp(115, 0, ease(phase(p, 0.72, 0.87)));
-      var lineY2 = lerp(115, 0, ease(phase(p, 0.75, 0.90)));
 
       var st = stage.style;
       st.setProperty("--frame-w", w.toFixed(2) + "vw");
@@ -303,9 +324,8 @@
       st.setProperty("--claim-y", claimY.toFixed(1) + "px");
       st.setProperty("--claim-s", claimS.toFixed(3));
 
-      var rows = stage.querySelectorAll(".claim .lines__row i");
-      if (rows[0]) rows[0].style.setProperty("--line-y", lineY.toFixed(1) + "%");
-      if (rows[1]) rows[1].style.setProperty("--line-y", lineY2.toFixed(1) + "%");
+      /* Jakmile plocha dojede, titulek se začne psát. Píše se jednou. */
+      if (claim) claim.classList.toggle("is-writing", p > 0.74);
 
       if (nav) nav.setAttribute("data-over-stage", String(p < 0.78));
     };
@@ -351,6 +371,7 @@
       sst.setProperty("--claim-y", "0px");
       sst.setProperty("--claim-s", "1");
       sst.setProperty("--sheet", "0%");
+      if (claim) claim.classList.add("is-writing");
     }
   }
 
@@ -428,6 +449,60 @@
     var replayBtn = document.querySelector("[data-intro-replay]");
     if (replayBtn) replayBtn.addEventListener("click", playIntro);
   }
+
+  /* ---------------------------------------------------------------------
+     Osa procesu — kreslení linky a postupné ztmavování kroků
+     Na širokých obrazovkách se sekce zastaví a linka se kreslí scrollem.
+     Na úzkých je osa svislá a odhalí se najednou, aby se nescrollovalo naprázdno.
+     --------------------------------------------------------------------- */
+  var railScenes = document.querySelectorAll("[data-rail-scene]");
+
+  railScenes.forEach(function (scene) {
+    var rail = scene.querySelector("[data-rail]");
+    if (!rail) return;
+
+    var line = rail.querySelector(".rail__line");
+    var steps = Array.prototype.slice.call(rail.querySelectorAll(".rail__step"));
+    if (!steps.length) return;
+
+    var wide = window.matchMedia("(min-width: 960px)");
+    var ticking = false;
+
+    var paint = function (p) {
+      if (line) line.style.setProperty("--rail-p", p.toFixed(3));
+      steps.forEach(function (st, i) {
+        /* Krok „dohání" linku — rozsvítí se, jakmile k němu doputuje. */
+        var sp = clamp(p * steps.length - i, 0, 1);
+        st.style.setProperty("--sp", sp.toFixed(3));
+        st.classList.toggle("is-on", sp > 0.3);
+      });
+    };
+
+    var render = function () {
+      ticking = false;
+
+      if (reduced || !wide.matches) { paint(1); return; }
+
+      var sticky = scene.querySelector(".rail-scene__sticky");
+      var travel = scene.offsetHeight - sticky.offsetHeight;
+      if (!(travel > 0)) { paint(1); return; }
+
+      var top = scene.getBoundingClientRect().top;
+      /* Prvních 12 % je klidové zastavení, pak se teprve kreslí. */
+      paint(clamp((-top / travel - 0.12) / 0.76, 0, 1));
+    };
+
+    var onScroll = function () {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(render);
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    window.addEventListener("load", onScroll);
+    render();
+  });
 
   initReveal(document);
   initCounters(document);

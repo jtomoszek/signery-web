@@ -268,22 +268,24 @@ h1, h2, h3, h4 {
    05 · Oblouk — grafický prvek (manuál, str. 25)
    Nerotujeme, nezrcadlíme, vždy otevřený dolů a zarovnaný k hraně / základní linii.
    -------------------------------------------------------------------------- */
+/* Proporce převzaté přímo z loga: šířka 98,6 · výška 99,6 · noha 28,25 */
 .arch {
+  --arch-w: clamp(50px, 12vw, 150px);
   display: block;
   border-style: solid;
   border-bottom: 0;
   border-radius: 999px 999px 0 0;
   border-color: currentColor;
-  border-width: clamp(12px, 3vw, 34px);
-  width: clamp(50px, 12vw, 150px);
-  aspect-ratio: 1 / 0.92;
+  border-width: calc(var(--arch-w) * 0.2865);
+  width: var(--arch-w);
+  height: calc(var(--arch-w) * 1.0101);
 }
 .arch--solid {
   border: 0;
   background: currentColor;
   border-radius: 999px 999px 0 0;
 }
-.arch--sm { border-width: 14px; width: 64px; }
+.arch--sm { --arch-w: 64px; }
 
 .arch-row {
   display: flex;
@@ -611,11 +613,11 @@ body[data-menu-open="true"] { overflow: hidden; }
 }
 .marquee__item::before {
   content: "";
-  width: 22px;
-  height: 12px;
-  border: 3px solid var(--sage);
-  border-bottom: 0;
-  border-radius: 999px 999px 0 0;
+  width: 18px;
+  height: 18px;
+  background: var(--sage);
+  -webkit-mask: url("../img/logo/arch-olive.svg") center / contain no-repeat;
+  mask: url("../img/logo/arch-olive.svg") center / contain no-repeat;
 }
 @keyframes marquee {
   from { transform: translateX(0); }
@@ -1242,14 +1244,15 @@ body[data-menu-open="true"] { overflow: hidden; }
   color: var(--ink-soft);
 }
 .tick-list li:last-child { border-bottom: 1px solid var(--line); }
+/* Značka je přesný tvar písmene „n" z loga, ne kreslená napodobenina */
 .tick-list li::before {
   content: "";
   width: 18px;
-  height: 10px;
-  margin-top: 7px;
-  border: 2.5px solid var(--sage);
-  border-bottom: 0;
-  border-radius: 999px 999px 0 0;
+  height: 18px;
+  margin-top: 4px;
+  background: var(--sage);
+  -webkit-mask: url("../img/logo/arch-olive.svg") center / contain no-repeat;
+  mask: url("../img/logo/arch-olive.svg") center / contain no-repeat;
 }
 
 /* ==========================================================================
@@ -1527,11 +1530,9 @@ body[data-menu-open="true"] { overflow: hidden; }
   content: "";
   position: absolute;
   inset: 0 0 auto 0;
-  height: 0;
+  height: calc(var(--rail-p, 0) * 100%);
   background: var(--moss);
-  transition: height 1.8s var(--ease) 0.2s;
 }
-.is-in .rail__line::after { height: 100%; }
 .rail__step {
   position: relative;
   padding: 18px 0 18px 40px;
@@ -1551,15 +1552,14 @@ body[data-menu-open="true"] { overflow: hidden; }
   transition: border-color 0.4s var(--ease), background-color 0.4s var(--ease);
   transition-delay: var(--d, 0s);
 }
-.is-in .rail__step::before { border-color: var(--moss); background: var(--moss); }
+.rail__step.is-on::before { border-color: var(--moss); background: var(--moss); }
 .rail__step h3 { font-size: 1.0625rem; }
 @media (min-width: 960px) {
   .rail { grid-auto-flow: column; grid-auto-columns: 1fr; gap: var(--gutter); }
   .rail__line { left: 0; right: 0; top: 6px; bottom: auto; width: auto; height: 2px; }
-  .rail__line::after { inset: 0 auto 0 0; height: 100%; width: 0; transition: width 1.8s var(--ease) 0.2s; }
-  .is-in .rail__line::after { width: 100%; height: 100%; }
+  .rail__line::after { inset: 0 auto 0 0; height: 100%; width: calc(var(--rail-p, 0) * 100%); }
   .rail__step { padding: 34px 16px 0 0; }
-  .rail__step::before { top: -6px; }
+  .rail__step::before { top: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1569,7 +1569,7 @@ body[data-menu-open="true"] { overflow: hidden; }
   .gauge__needle { transition: none; transform: rotate(calc(-92deg + var(--pct, 62) * 1.8deg)); }
   .sig__path { transition: none; stroke-dashoffset: 0; }
   .is-in .envelope__flow { animation: none; opacity: 0.75; }
-  .rail__line::after { transition: none; }
+  .rail__step { opacity: 1 !important; }
 }
 
 /* --------------------------------------------------------------------------
@@ -1713,9 +1713,30 @@ body[data-menu-open="true"] { overflow: hidden; }
 
 .claim {
   text-align: center;
-  opacity: var(--claim-o, 0);
   transform: translateY(var(--claim-y, 30px)) scale(var(--claim-s, 0.96));
-  will-change: transform, opacity;
+  will-change: transform;
+}
+.claim__eyebrow { opacity: var(--claim-o, 0); }
+
+/* Titulek se píše po písmenech — každé se vynoří z rozostření
+   a vyjede o 5 px zespodu. */
+.ltr {
+  display: inline-block;
+  white-space: pre;
+  opacity: 0;
+  filter: blur(9px);
+  transform: translateY(5px);
+}
+.claim.is-writing .ltr {
+  opacity: 1;
+  filter: blur(0);
+  transform: none;
+  transition: opacity 0.5s var(--ease), filter 0.5s var(--ease), transform 0.5s var(--ease);
+  transition-delay: calc(var(--i, 0) * 26ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ltr { opacity: 1; filter: none; transform: none; }
 }
 .claim__eyebrow { display: block; margin-bottom: clamp(24px, 3.2vw, 48px); }
 
@@ -1761,6 +1782,7 @@ body.has-stage { padding-top: 0; }
 
 .nav-outer[data-over-stage="true"] .nav {
   background: rgba(30, 30, 14, 0.22);
+  border-color: transparent;   /* nad videem by světlá hrana rušila */
   box-shadow: none;
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
@@ -1981,12 +2003,8 @@ body[data-intro="true"] { overflow: hidden; }
    27 · Řádky odhalované zpod masky
    Používá je tvrzení na ploše Linen v úvodní scéně.
    -------------------------------------------------------------------------- */
-.lines__row { display: block; overflow: hidden; }
-.lines__row i {
-  display: block;
-  font-style: normal;
-  transform: translateY(var(--line-y, 0%));
-}
+.lines__row { display: block; }
+.lines__row i { display: block; font-style: normal; }
 
 /* --------------------------------------------------------------------------
    28 · Zrno přes celou stránku
@@ -2006,4 +2024,37 @@ body::after {
 
 @media (prefers-reduced-motion: reduce) {
   body::after { opacity: 0.1; }
+}
+
+/* --------------------------------------------------------------------------
+   29 · Osa procesu — scéna se zastavením
+   Sekce se na chvíli zastaví a další scrollování kreslí linku zleva doprava.
+   Kroky přitom postupně tmavnou ze světlé do plné barvy, aby byl proces vidět.
+   -------------------------------------------------------------------------- */
+.rail-scene { position: relative; }
+.rail-scene__sticky { position: relative; }
+
+/* Krok je nejdřív světlý a s příchodem linky ztmavne */
+.rail__step {
+  opacity: calc(0.22 + 0.78 * var(--sp, 1));
+  transition: opacity 0.35s linear;
+}
+
+@media (min-width: 960px) {
+  /* Zastavení dává smysl jen tam, kde je osa vodorovná */
+  .rail-scene { height: 220vh; }
+  .rail-scene__sticky {
+    position: sticky;
+    top: 0;
+    min-height: 100vh;
+    display: grid;
+    align-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rail-scene { height: auto; }
+  .rail-scene__sticky { position: static; min-height: 0; }
+  .rail__step { opacity: 1; }
+  .rail__line::after { width: 100%; height: 100%; }
 }
