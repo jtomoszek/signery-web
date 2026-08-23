@@ -1187,12 +1187,30 @@ body[data-menu-open="true"] { overflow: hidden; }
   overflow: hidden;
 }
 .band > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* Lehké ztmavení celé plochy — dává snímku hloubku a drží horní okraj */
 .band::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(170deg, rgba(55, 55, 27, 0.5) 0%, rgba(55, 55, 27, 0.1) 42%, rgba(55, 55, 27, 0.86) 100%);
+  background: linear-gradient(170deg, rgba(55, 55, 27, 0.42) 0%, rgba(55, 55, 27, 0.12) 45%, rgba(55, 55, 27, 0.45) 100%);
 }
+/* Stínítko pod textem. Váže se na obsah, takže drží kontrast bez ohledu
+   na to, jak je snímek světlý a jak je text dlouhý. */
+.band__content::before {
+  content: "";
+  position: absolute;
+  inset: -90px -60% -1px -1px;
+  z-index: -1;
+  background: linear-gradient(to top,
+    rgba(26, 26, 10, 0.90) 0%,
+    rgba(26, 26, 10, 0.86) 55%,
+    rgba(26, 26, 10, 0.66) 82%,
+    rgba(26, 26, 10, 0) 100%);
+  /* Doprava se rozplyne, aby stínítko nekončilo ostrou hranou */
+  -webkit-mask-image: linear-gradient(to right, #000 52%, transparent 100%);
+  mask-image: linear-gradient(to right, #000 52%, transparent 100%);
+}
+
 .band__content {
   position: relative;
   z-index: 1;
@@ -1200,6 +1218,7 @@ body[data-menu-open="true"] { overflow: hidden; }
   color: var(--linen);
   display: grid;
   gap: 18px;
+  isolation: isolate;
   max-width: 40ch;
 }
 .band__content :is(h1, h2, h3) { color: var(--linen); }
