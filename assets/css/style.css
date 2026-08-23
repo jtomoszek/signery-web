@@ -1704,8 +1704,18 @@ body[data-menu-open="true"] { overflow: hidden; }
   transform: translateY(var(--claim-y, 30px)) scale(var(--claim-s, 0.96));
   will-change: transform, opacity;
 }
-.claim__eyebrow { display: block; margin-bottom: clamp(20px, 2.4vw, 32px); }
-.claim__title { margin-inline: auto; max-width: 20ch; }
+.claim__eyebrow { display: block; margin-bottom: clamp(24px, 3.2vw, 48px); }
+
+/* Tvrzení má celou obrazovku samo pro sebe, proto je největší sazbou webu —
+   větší než hero, které se o plochu dělí s podtitulkem a tlačítky. */
+.claim__title {
+  margin-inline: auto;
+  max-width: none;
+  font-size: clamp(2.25rem, 8.5vw, 7.5rem);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 0.98;
+}
 .claim__soft { color: var(--moss); }
 
 @media (max-width: 780px) {
