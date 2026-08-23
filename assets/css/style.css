@@ -1538,6 +1538,9 @@ body[data-menu-open="true"] { overflow: hidden; }
   padding: 18px 0 18px 40px;
   display: grid;
   gap: 5px;
+  /* Položky se roztahují na výšku nejvyšší z nich. Bez tohoto by se volné
+     místo rozdělilo mezi řádky a kroky s kratším textem by měly nadpis níž. */
+  align-content: start;
 }
 .rail__step::before {
   content: "";
