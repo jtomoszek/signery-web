@@ -468,20 +468,37 @@
     var wide = window.matchMedia("(min-width: 960px)");
     var ticking = false;
 
+    /* Poloha každého kolečka jako podíl šířky osy. Počítá se z rozložení,
+       ne z pořadí — sloupce mají mezery, takže by index neseděl. */
+    var thresholds = [];
+    var measure = function () {
+      var w = rail.clientWidth;
+      thresholds = steps.map(function (st) {
+        return w > 0 ? (st.offsetLeft + 7) / w : 0;
+      });
+    };
+
     var paint = function (p) {
       if (line) line.style.setProperty("--rail-p", p.toFixed(3));
+
+      /* Krok se rozsvěcí půl sloupce před svým kolečkem a je plný přesně
+         ve chvíli, kdy k němu linka dojede — text tak linku nedohání. */
+      var span = 0.5 / steps.length;
+
       steps.forEach(function (st, i) {
-        /* Krok „dohání" linku — rozsvítí se, jakmile k němu doputuje. */
-        var sp = clamp(p * steps.length - i, 0, 1);
+        var t = thresholds[i] || 0;
+        var sp = clamp((p - t) / span + 1, 0, 1);
         st.style.setProperty("--sp", sp.toFixed(3));
-        st.classList.toggle("is-on", sp > 0.3);
+        st.classList.toggle("is-on", p >= t - 0.005);
       });
     };
 
     var render = function () {
       ticking = false;
 
-      if (reduced || !wide.matches) { paint(1); return; }
+      if (reduced || !wide.matches) { measure(); paint(1); return; }
+
+      measure();
 
       var sticky = scene.querySelector(".rail-scene__sticky");
       var travel = scene.offsetHeight - sticky.offsetHeight;
