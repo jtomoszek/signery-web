@@ -2087,3 +2087,13 @@ body::after {
    a centrujeme — přes celou šířku stránky by se řádky rozpadly.
    -------------------------------------------------------------------------- */
 .form-single { max-width: 760px; margin-inline: auto; }
+
+/* --------------------------------------------------------------------------
+   31 · Rozcestník B2B / B2C — výraznější popisek
+   Na přání klientky větší písmo, ať je rozdělení cest čitelné na první pohled.
+   -------------------------------------------------------------------------- */
+.path__tag {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
