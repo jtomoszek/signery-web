@@ -415,7 +415,7 @@ h1, h2, h3, h4 {
    Před spuštěním nahraďte originálním SVG ze značkové knihovny (manuál, str. 15:
    „Nikdy nepřekreslujte z PDF ani ze screenshotu.").
    -------------------------------------------------------------------------- */
-.logo { display: inline-block; line-height: 0; }
+.logo { display: inline-block; line-height: 0; flex: 0 0 auto; }
 .logo__img {
   display: block;
   width: auto;
@@ -471,6 +471,7 @@ h1, h2, h3, h4 {
   font-size: 0.875rem;
   font-weight: 500;
   color: var(--ink-soft);
+  white-space: nowrap;
   transition: background-color 0.2s var(--ease), color 0.2s var(--ease);
 }
 .nav__link:hover { color: var(--olive); background: var(--linen); }
@@ -531,7 +532,8 @@ h1, h2, h3, h4 {
 .mobile-menu__foot { margin-top: 28px; display: grid; gap: 14px; justify-items: start; }
 body[data-menu-open="true"] { overflow: hidden; }
 
-@media (min-width: 1000px) {
+/* 1080px = nejmenší šířka, kde se pět položek vejde na jeden řádek bez zalomení */
+@media (min-width: 1080px) {
   .nav__links { display: flex; }
   .nav__toggle { display: none; }
   .nav__cta { display: inline-flex; }
