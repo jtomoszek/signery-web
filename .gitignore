@@ -13,3 +13,6 @@ _archiv/
 
 # Nový manuál značky (HTML bundle) — interní podklad, zdroj log a barev
 Manuál značky Signery.html
+
+# Wrangler (Cloudflare) — lokální cache
+.wrangler/

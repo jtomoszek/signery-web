@@ -1,0 +1,16 @@
+# Cloudflare Pages — hlavičky odpovědí
+# Dokumentace: https://developers.cloudflare.com/pages/configuration/headers/
+
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=()
+  # Bez includeSubDomains — na subdoménách u Gigaserveru (webmail, pošta)
+  # nemusí být HTTPS a vynucení by je znepřístupnilo.
+  Strict-Transport-Security: max-age=31536000
+
+# CSS a JS mají v odkazu ?v=RRRRMMDDHHMM, obrázky a videa se nemění.
+# Dlouhá platnost je proto bezpečná — nová verze = nová adresa.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://signery.cz/sitemap.xml
