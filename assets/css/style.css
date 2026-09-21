@@ -1035,6 +1035,34 @@ body[data-menu-open="true"] { overflow: hidden; }
 .field textarea:focus { outline: none; border-color: var(--moss); }
 .field--row { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); }
 .form__note { font-size: 0.8125rem; color: var(--ink-muted); }
+
+/* Past na roboty — schovaná tak, aby ji nenašly ani čtečky obrazovky,
+   ale aby ji vyplňovač formulářů v prohlížeči robota pořád viděl. */
+.form__past {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Hlášení po odeslání formuláře */
+.form__stav {
+  margin-bottom: 24px;
+  padding: 16px 20px;
+  border-radius: 16px;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  border: 1px solid var(--moss);
+  background: var(--sage-40);
+  color: var(--olive);
+}
+.form__stav[data-ok="false"] {
+  border-color: #b4553f;
+  background: #f6e3dd;
+  color: #7d3524;
+}
 .consent { display: flex; gap: 12px; align-items: flex-start; font-size: 0.875rem; color: var(--ink-soft); }
 .consent input { width: 18px; height: 18px; margin-top: 3px; flex: 0 0 auto; accent-color: var(--moss); }
 

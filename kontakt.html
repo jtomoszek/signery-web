@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Poppins:wght@300;400;500;600&display=swap">
-<link rel="stylesheet" href="assets/css/style.css?v=202609082114">
+<link rel="stylesheet" href="assets/css/style.css?v=202609211121">
 <script>document.documentElement.className = document.documentElement.className.replace('no-js', 'js');</script>
 </head>
 <body>
@@ -164,11 +164,15 @@
             <h2 class="h3">Napište nám</h2>
           </div>
 
-          <!--
-            Formulář zatím nikam neodesílá. Před spuštěním doplňte action
-            (vlastní endpoint, Formspree, Webflow Forms apod.) a metodu POST.
-          -->
-          <form class="form" action="#" method="post" novalidate>
+          <p class="form__stav" data-stav hidden></p>
+
+          <form class="form" action="https://formular.signery.cz/odeslat.php" method="post" novalidate data-form>
+            <!-- Past na roboty: člověk tahle dvě pole nevidí ani nevyplní. -->
+            <div class="form__past" aria-hidden="true">
+              <label for="web">Nevyplňujte</label>
+              <input id="web" name="web" type="text" tabindex="-1" autocomplete="off">
+            </div>
+            <input type="hidden" name="cas" value="0" data-cas>
             <div class="field--row">
               <div class="field">
                 <label for="jmeno">Jméno a příjmení</label>
@@ -229,7 +233,7 @@
             </label>
 
             <div class="row" style="margin-top:8px">
-              <button class="btn btn--primary" type="submit">Odeslat</button>
+              <button class="btn btn--primary" type="submit" data-odeslat>Odeslat</button>
             </div>
             <p class="form__note">Odpovídáme v pracovní dny. Pokud spěcháte, zavolejte.</p>
           </form>
@@ -272,6 +276,6 @@
   </div>
 </footer>
 
-<script src="assets/js/main.js?v=202609082114"></script>
+<script src="assets/js/main.js?v=202609211121"></script>
 </body>
 </html>

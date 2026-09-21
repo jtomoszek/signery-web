@@ -521,8 +521,96 @@
     render();
   });
 
+  /* ============================================================
+     KONTAKTNÍ FORMULÁŘ
+     Odesílá se na PHP endpoint u Gigaserveru, kde běží i schránka.
+     Bez JS se formulář odešle klasicky a skript přesměruje zpět
+     na /kontakt?odeslano=1 — proto je tady i čtení toho parametru.
+     ============================================================ */
+  function initForm() {
+    var form = document.querySelector("[data-form]");
+    var stav = document.querySelector("[data-stav]");
+    if (!stav) return;
+
+    var ukaz = function (ok, text) {
+      stav.textContent = text;
+      stav.setAttribute("data-ok", ok ? "true" : "false");
+      stav.hidden = false;
+    };
+
+    /* Návrat z odeslání bez JS */
+    var params = new URLSearchParams(window.location.search);
+    if (params.has("odeslano")) {
+      ukaz(true, "Děkujeme, zpráva odešla. Ozveme se v pracovní dny.");
+      if (form) form.hidden = true;
+    } else if (params.has("chyba")) {
+      ukaz(false, "Zprávu se nepodařilo odeslat. Napište prosím přímo na sandra@signery.cz.");
+    }
+
+    if (!form) return;
+
+    /* Značka času — podle ní endpoint pozná formulář vyplněný robotem. */
+    var cas = form.querySelector("[data-cas]");
+    if (cas) cas.value = String(Math.floor(Date.now() / 1000));
+
+    var tlacitko = form.querySelector("[data-odeslat]");
+
+    form.addEventListener("submit", function (e) {
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        e.preventDefault();
+        return;
+      }
+
+      /* Bez fetch necháme proběhnout klasické odeslání. */
+      if (!window.fetch || !window.FormData) return;
+
+      e.preventDefault();
+      stav.hidden = true;
+
+      var puvodni = tlacitko ? tlacitko.textContent : "";
+      if (tlacitko) {
+        tlacitko.disabled = true;
+        tlacitko.textContent = "Odesílám…";
+      }
+
+      var data = new FormData(form);
+      data.append("ajax", "1");
+
+      fetch(form.action, {
+        method: "POST",
+        body: data,
+        headers: { Accept: "application/json" }
+      })
+        .then(function (r) {
+          return r.json().catch(function () {
+            throw new Error("Neplatná odpověď serveru.");
+          });
+        })
+        .then(function (odpoved) {
+          if (odpoved && odpoved.ok) {
+            ukaz(true, odpoved.zprava);
+            form.hidden = true;
+            stav.scrollIntoView({ behavior: "smooth", block: "center" });
+          } else {
+            ukaz(false, (odpoved && odpoved.zprava) || "Zprávu se nepodařilo odeslat.");
+          }
+        })
+        .catch(function () {
+          ukaz(false, "Spojení se serverem se nezdařilo. Napište prosím přímo na sandra@signery.cz.");
+        })
+        .then(function () {
+          if (tlacitko) {
+            tlacitko.disabled = false;
+            tlacitko.textContent = puvodni;
+          }
+        });
+    });
+  }
+
   initReveal(document);
   initCounters(document);
+  initForm();
 
   window.signery = { initReveal: initReveal, initCounters: initCounters };
 })();
