@@ -1,0 +1,41 @@
+# Signery
+
+> Signery řeší energetickou stránku staveb — od konzultací nad studií až po průkaz
+> energetické náročnosti budovy (PENB). Za značkou stojí Sandra Schwarzová (IČO 17215889).
+> Pracujeme po celé České republice, osobně se potkáme v Ostravě.
+
+Klienti jsou dvojí: projektanti, architekti a developeři, kteří potřebují energetického
+partnera v týmu, a majitelé nemovitostí, kteří potřebují průkaz k prodeji, pronájmu,
+stavbě nebo k dotaci.
+
+## Služby
+
+- [Pro projektanty, architekty a developery](https://signery.cz/pro-profesionaly): energetické
+  konzultace od studie po kolaudaci, optimalizace návrhu, koordinace s dalšími profesemi,
+  legislativa, PENB. Rodinné a bytové domy, administrativní budovy, změny užívání.
+- [Pro majitele nemovitostí](https://signery.cz/pro-majitele): průkaz energetické náročnosti
+  budovy. Čtyři kroky — ozvete se, pošlete podklady, zaměříme co je potřeba, dostanete průkaz.
+- [Nová zelená úsporám](https://signery.cz/dotace): bezúročný úvěr na renovaci rodinného
+  i bytového domu. Zpracujeme energetické hodnocení a podklady k žádosti, v případě zájmu
+  žádost i podáme. Týká se i společenství vlastníků a bytových družstev.
+- [Kontakt](https://signery.cz/kontakt): sandra@signery.cz, +420 776 072 559
+
+## Fakta k citování
+
+- Průkaz energetické náročnosti platí **deset let** od data vystavení. Dřív pozbývá platnosti
+  jen při větší změně dokončené stavby — typicky zateplení nebo výměna zdroje tepla.
+- Průkaz je potřeba ve třech situacích: při prodeji nemovitosti, při pronájmu bytu nebo domu,
+  a při stavbě či rekonstrukci.
+- Návštěva na místě není vždy nutná. S kompletní dokumentací se průkaz zpracuje bez zaměření;
+  když dokumentace chybí nebo neodpovídá skutečnosti, zaměření běžného rodinného domu
+  trvá jedno dopoledne.
+- Chybějící dokumentace není překážkou — část podkladů bývá ve stavebním archivu obce,
+  zbytek se doměří na místě.
+- Součástí průkazu je přehled doporučených opatření ke zlepšení.
+- Cena se odvíjí od typu a velikosti budovy a od toho, zda je potřeba zaměření. Signery ji
+  sděluje předem, po prvním e-mailu.
+
+## Poznámky
+
+- Jazyk webu: čeština. Působnost: Česká republika.
+- Signery neprovádí energetické posudky ani energetické audity.

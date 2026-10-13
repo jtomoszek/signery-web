@@ -22,6 +22,7 @@ cp "$KOREN"/*.html          "$DIST"/
 cp -R "$KOREN"/assets       "$DIST"/
 cp "$KOREN"/_headers        "$DIST"/
 [ -f "$KOREN/robots.txt" ]  && cp "$KOREN/robots.txt"  "$DIST"/
+[ -f "$KOREN/llms.txt" ]    && cp "$KOREN/llms.txt"    "$DIST"/
 [ -f "$KOREN/sitemap.xml" ] && cp "$KOREN/sitemap.xml" "$DIST"/
 [ -f "$KOREN/_redirects" ]  && cp "$KOREN/_redirects"  "$DIST"/
 
