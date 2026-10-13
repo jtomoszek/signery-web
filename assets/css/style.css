@@ -2127,3 +2127,47 @@ body::after {
   font-weight: 700;
   letter-spacing: 0.12em;
 }
+
+/* ============================================================
+   31b. PRÁVNÍ TEXTY
+   Delší souvislý text — zásady ochrany údajů, cookies.
+   ============================================================ */
+.proza { max-width: 68ch; }
+.proza h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2.4vw, 1.625rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-top: 56px;
+  margin-bottom: 16px;
+}
+.proza h2:first-child { margin-top: 0; }
+.proza h3 {
+  font-family: var(--font-text);
+  font-size: 1rem;
+  font-weight: 700;
+  margin-top: 32px;
+  margin-bottom: 8px;
+}
+.proza p,
+.proza li { font-size: 0.9375rem; line-height: 1.65; color: var(--ink-soft); }
+.proza p { margin-bottom: 16px; }
+.proza ul { margin: 0 0 16px 0; padding-left: 20px; list-style: disc; }
+.proza li { margin-bottom: 8px; }
+.proza li::marker { color: var(--moss); }
+.proza a { color: var(--olive); text-decoration: underline; text-underline-offset: 3px; }
+.proza a:hover { color: var(--moss); }
+.proza strong { color: var(--olive); font-weight: 700; }
+.proza__meta {
+  font-size: 0.8125rem;
+  color: var(--ink-muted);
+  padding-bottom: 24px;
+  margin-bottom: 40px;
+  border-bottom: 1px solid var(--line);
+}
+.proza dl { margin: 0 0 16px; }
+.proza dt { font-size: 0.8125rem; color: var(--ink-muted); margin-top: 12px; }
+.proza dd { margin: 0; font-size: 0.9375rem; color: var(--ink-soft); }
+.consent a { color: var(--olive); text-decoration: underline; text-underline-offset: 2px; }
+.consent a:hover { color: var(--moss); }
